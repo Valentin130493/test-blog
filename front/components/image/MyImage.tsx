@@ -1,10 +1,11 @@
 import Image from 'next/image'
+import {StaticImageData} from "next/dist/client/image";
 
 
 interface Props {
     width: string | number,
     height: string | number,
-    src: string,
+    src: string | StaticImageData,
     layout?: "fixed" | "fill" | "intrinsic" | "responsive" | undefined
     alt?: string
 }
