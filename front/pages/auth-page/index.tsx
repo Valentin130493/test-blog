@@ -1,23 +1,18 @@
 import React from 'react';
 import {AuthForm} from "../../components/auth-form/auth-form";
 import {NextPage} from "next";
-import Image from 'next/image'
 import bg from '../../image/bg.jpg'
 import styles from '../../styles/auth-page.module.css'
+import {MyImage} from "../../components/image/MyImage";
 
 
- const Index: NextPage = () => {
+const AuthPage: NextPage = () => {
     return (
         <div className={styles.authPage}>
-           <AuthForm/>
-            <Image
-                src={bg}
-                layout="fixed"
-                width={500}
-                height={500}
-            />
-            </div>
+            <AuthForm/>
+            <MyImage width={1000} height={500} src={bg} layout={"intrinsic"}/>
+        </div>
     );
 };
 
- export default Index;
+export default AuthPage;
