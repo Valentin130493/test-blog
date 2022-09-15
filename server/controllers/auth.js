@@ -9,6 +9,9 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
     await pool.query('INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *', [username, email, passwordHash], (error, results) => {
+        if (error) {
+            throw error
+        }
         const {user_id, email, username} = results.rows[0]
         const token = jwt.sign(
             {
@@ -20,9 +23,6 @@ const register = async (req, res) => {
             },
         );
 
-        if (error) {
-            throw error
-        }
         res.status(200).json({
             user_id,
             email,
@@ -34,7 +34,6 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
 
-
     await pool.query(`SELECT user_id, email, username, password FROM users WHERE email = '${req.body.email}' `, (error, results) => {
         const {user_id, email, username} = results.rows[0]
         if (error) {
@@ -44,7 +43,6 @@ const login = async (req, res) => {
             _id: user_id
         }, process.env.SECRET_KEY, {expiresIn: "30d"})
 
-
         res.status(200).json({
             user_id,
             email,
@@ -52,7 +50,6 @@ const login = async (req, res) => {
             token
         })
     })
-
 }
 
 
