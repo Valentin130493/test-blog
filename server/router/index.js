@@ -6,11 +6,11 @@ const Router = require('express').Router
 const router = new Router();
 
 
-router.get('/users', UserController.getUsers)
-router.get('/users/:id', UserController.getUserById)
-router.post('/users', UserController.createUser)
-router.put('/users', UserController.updateUser)
-router.delete('/users/:id', UserController.deleteUser)
+router.get('admin/users', UserController.getUsers)
+router.get('admin/users/:id', UserController.getUserById)
+router.post('admin/users', UserController.createUser)
+router.put('admin/users', UserController.updateUser)
+router.delete('admin/users/:id', UserController.deleteUser)
 
 router.get('/posts', PostsController.getPosts)
 router.get('/posts/:id', PostsController.getPostById)

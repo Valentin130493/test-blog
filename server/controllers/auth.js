@@ -43,7 +43,18 @@ const login = async (req, res) => {
             _id: user_id
         }, process.env.SECRET_KEY, {expiresIn: "30d"})
 
-        res.status(200).json({
+        if (email === 'admin@admin.com') {
+            const role = "Admin"
+            return res.status(200).json({
+                user_id,
+                email,
+                username,
+                role,
+                token
+            })
+        }
+
+        return res.status(200).json({
             user_id,
             email,
             username,
