@@ -7,6 +7,7 @@ import {MyImage} from "../../components/image/MyImage";
 
 
 const AuthPage: NextPage = () => {
+
     return (
         <div className={styles.authPage}>
             <AuthForm/>
