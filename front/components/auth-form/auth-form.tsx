@@ -2,8 +2,10 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import {useForm, SubmitHandler} from "react-hook-form";
+import {useForm,SubmitHandler} from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 import styles from '../../styles/auth-form.module.css'
+import Link from "next/link";
 
 interface ISingInForm {
     email: string;
@@ -11,51 +13,38 @@ interface ISingInForm {
 }
 
 export const AuthForm = () => {
-    const {handleSubmit, register} = useForm<ISingInForm>();
+    const {handleSubmit, register,formState: { errors }} = useForm<ISingInForm>();
 
     const onSubmit: SubmitHandler<ISingInForm> = (data) => console.log(data);
     return (
         <div className={styles.authForm}>
             <Typography variant="h4" component='h1'>
-                Войдите
+                Sign in
             </Typography>
             <Typography variant="subtitle1" component='p' gutterBottom={true} className={styles.authFormSubtitle}>
-                Чтобы получить доступ
             </Typography>
             <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
-                {/*<Controller*/}
-                {/*control={control}*/}
-                {/*name="Email"*/}
-                {/*render={({field})=>(*/}
                 <TextField
-                    {...register("email", {required: "Required field"})}
+                    {...register("email", {required: "Required field", pattern: /[A-Za-z]{3}/})}
                     label="Email"
                     size="small"
                     margin="normal"
                     className={styles.authFormInput}
                     fullWidth={true}
-                    // onChange={(e)=> field.onChange(e)}
-                    // value={field.value}
                 />
-                {/*)}*/}
-                {/*/>*/}
-
-                {/*<Controller*/}
-                {/*    control={control}*/}
-                {/*    name="Password"*/}
-                {/*    render={({field})=>(*/}
-                <TextField
-                    {...register("password", {required: "Required field"})}
-                    label="Password"
-                    size="small"
-                    margin="normal"
-                    className={styles.authFormInput}
-                    fullWidth={true}
-                    // onChange={(e)=> field.onChange(e)}
-                    // value={field.value}
-                />
-                {/*)}*/}
-                {/*/>*/}
+                <ErrorMessage errors={errors} name="email" />
+                        <TextField
+                            {...register("password",{required:"Required field",min:3})}
+                            label="Password"
+                            size="small"
+                            margin="normal"
+                            className={styles.authFormInput}
+                            fullWidth={true}
+                        />
+                <ErrorMessage errors={errors} name="password" />
+                <Link href="/registration">
+                    <a>Go to Registration</a>
+                </Link>
                 <Button
                     type="submit"
                     variant="contained"
