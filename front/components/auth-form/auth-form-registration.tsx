@@ -6,6 +6,8 @@ import Link from "next/link";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
+import {baseUrl} from "../../constants/api";
+import axios from "axios";
 
 
 interface IRegistrationForm {
@@ -17,7 +19,9 @@ interface IRegistrationForm {
 export const AuthFormRegistration = () => {
     const {handleSubmit, register,formState: { errors }} = useForm<IRegistrationForm>();
 
-    const onSubmit: SubmitHandler<IRegistrationForm> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<IRegistrationForm> = async (data) => {
+    const result = await axios.post(baseUrl,data)
+    };
     return (
         <div className={styles.authForm}>
             <Typography variant="h4" component='h1'>
