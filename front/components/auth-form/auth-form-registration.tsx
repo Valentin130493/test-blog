@@ -11,7 +11,7 @@ import axios from "axios";
 
 
 interface IRegistrationForm {
-    userName: string;
+    username: string;
     email: string;
     password: string;
 }
@@ -20,7 +20,7 @@ export const AuthFormRegistration = () => {
     const {handleSubmit, register,formState: { errors }} = useForm<IRegistrationForm>();
 
     const onSubmit: SubmitHandler<IRegistrationForm> = async (data) => {
-    const result = await axios.post(baseUrl,data)
+    const result = await axios.post(baseUrl+'/auth/register',data)
     };
     return (
         <div className={styles.authForm}>
@@ -31,14 +31,14 @@ export const AuthFormRegistration = () => {
             </Typography>
             <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
                 <TextField
-                    {...register("userName", {required: "Required field",min: 3,max: 10})}
+                    {...register("username", {required: "Required field",min: 3,max: 10})}
                     label="User name"
                     size="small"
                     margin="normal"
                     className={styles.authFormInput}
                     fullWidth={true}
                 />
-                <ErrorMessage errors={errors} name="userName" />
+                <ErrorMessage errors={errors} name="username" />
                 <TextField
                     {...register("email", {required: "Required field", pattern: /[A-Za-z]{3}/})}
                     label="Email"
