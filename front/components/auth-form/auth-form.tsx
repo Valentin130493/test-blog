@@ -6,6 +6,10 @@ import {useForm,SubmitHandler} from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 import styles from '../../styles/auth-form.module.css'
 import Link from "next/link";
+import axios from "axios";
+import {baseUrl, login} from "../../constants/api";
+import {Storage} from "../../utils/sessionStorage";
+import {token} from "../../constants/storageKey";
 
 interface ISingInForm {
     email: string;
@@ -15,7 +19,9 @@ interface ISingInForm {
 export const AuthForm = () => {
     const {handleSubmit, register,formState: { errors }} = useForm<ISingInForm>();
 
-    const onSubmit: SubmitHandler<ISingInForm> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<ISingInForm> = async (data) =>
+    {const result = await axios.post(`${baseUrl}${login}`,data)
+        Storage.set(token,result.data.token)};
     return (
         <div className={styles.authForm}>
             <Typography variant="h4" component='h1'>
@@ -35,6 +41,7 @@ export const AuthForm = () => {
                 <ErrorMessage errors={errors} name="email" />
                         <TextField
                             {...register("password",{required:"Required field",min:3})}
+                            type="password"
                             label="Password"
                             size="small"
                             margin="normal"
