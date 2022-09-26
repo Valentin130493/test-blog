@@ -4,7 +4,6 @@ import {NextPage} from "next";
 import bg from '../../image/bg.jpg'
 import styles from '../../styles/auth-page.module.css'
 import {MyImage} from "../../components/image/MyImage";
-import {AuthFormRegistration} from "../../components/auth-form/auth-form-registration";
 
 
 const AuthPage: NextPage = () => {

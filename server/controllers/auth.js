@@ -4,7 +4,6 @@ const pool = require("../db/db.js");
 
 
 const register = async (req, res) => {
-
     const {username, email, password} = req.body
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);

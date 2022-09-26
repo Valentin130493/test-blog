@@ -6,7 +6,7 @@ import Link from "next/link";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {ErrorMessage} from "@hookform/error-message";
-import {baseUrl} from "../../constants/api";
+import {baseUrl, registration} from "../../constants/api";
 import axios from "axios";
 
 
@@ -20,7 +20,8 @@ export const AuthFormRegistration = () => {
     const {handleSubmit, register,formState: { errors }} = useForm<IRegistrationForm>();
 
     const onSubmit: SubmitHandler<IRegistrationForm> = async (data) => {
-    const result = await axios.post(baseUrl+'/auth/register',data)
+    const result = await axios.post(`${baseUrl}${registration}`,data)
+        console.log(result.data);
     };
     return (
         <div className={styles.authForm}>
@@ -50,6 +51,7 @@ export const AuthFormRegistration = () => {
                 <ErrorMessage errors={errors} name="email" />
                 <TextField
                     {...register("password",{required:"Required field",min: 5})}
+                    type="password"
                     label="Password"
                     size="small"
                     margin="normal"
