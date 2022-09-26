@@ -8,5 +8,6 @@ CREATE TABLE users (
 CREATE TABLE posts (
      post_id serial PRIMARY KEY,
      title VARCHAR ( 255 ) NOT NULL,
-     content VARCHAR ( 255 ),
+     content VARCHAR ( MAX ),
+     image VARCHAR ( 255 )
 );
