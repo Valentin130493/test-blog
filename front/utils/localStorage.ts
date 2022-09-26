@@ -1,15 +1,14 @@
 export const Storage = {
     get: (key: string) => {
-        localStorage.getItem(key)
+        sessionStorage.getItem(key)
     },
     set: (key: string, value: string) => {
-        localStorage.setItem(key, value)
+        sessionStorage.setItem(key, value)
     },
     remove: (key: string) => {
-        localStorage.removeItem(key)
+        sessionStorage.removeItem(key)
     },
     clear: () => {
-        localStorage.clear()
+        sessionStorage.clear()
     }
-
 }
