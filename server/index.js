@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer')
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser')
 const router = require('./router/index.js')
@@ -15,6 +16,27 @@ app.use(
         extended: true,
     })
 )
+
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, "uploads")
+    }, filename: (_, file, cb) => {
+        cb(null, file.originalname)
+    },
+})
+const upload = multer({storage})
+app.use('/uploads', express.static('uploads'))
+
+app.post('/upload', upload.single('image'), async (req, res) => {
+    try {
+        res.json({
+            url: `uploads/${req.file.originalname}`
+        })
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 app.use('/', router)
 
 

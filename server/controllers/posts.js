@@ -21,13 +21,13 @@ const getPostById = (request, response) => {
 }
 
 const createPost = (request, response) => {
-    const {title, content} = request.body
+    const {title, content, imageUrl} = request.body
 
-    pool.query('INSERT INTO posts (title, content) VALUES ($1, $2) RETURNING *', [title, content], (error, results) => {
+    pool.query('INSERT INTO posts (title, content, image) VALUES ($1, $2, $3) RETURNING *', [title, content, imageUrl], (error, results) => {
         if (error) {
             throw error
         }
-        response.status(201).send(`User added with ID: ${results.rows[0].id}`)
+        response.status(200).json(results.rows[0])
     })
 }
 
