@@ -1,5 +1,6 @@
 const UserController = require("../controllers/users.js");
 const PostsController = require("../controllers/posts.js")
+const CommentsController = require("../controllers/comments")
 const AuthController = require('../controllers/auth.js')
 const {registerValidation, loginValidation} = require("../validation/authValidators");
 const Router = require('express').Router
@@ -17,6 +18,8 @@ router.get('admin/posts/:id', PostsController.getPostById)
 router.post('admin/posts', PostsController.createPost)
 router.put('admin/posts', PostsController.updatePost)
 router.delete('admin/posts/:id', PostsController.deletePost)
+
+router.post('/comment', CommentsController.createComment)
 
 router.post('/auth/login', loginValidation, AuthController.login)
 router.post('/auth/register', registerValidation, AuthController.register)
