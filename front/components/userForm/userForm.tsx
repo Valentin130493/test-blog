@@ -1,33 +1,33 @@
 import React from 'react';
-import Typography from "@mui/material/Typography";
 import styles from "../../styles/auth-form.module.css";
+import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import {ErrorMessage} from "@hookform/error-message";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {ErrorMessage} from "@hookform/error-message";
-import {baseUrl, registration} from "../../constants/api";
 import axios from "axios";
+import {baseUrl, login} from "../../constants/api";
+import {Storage} from "../../utils/sessionStorage";
+import {token} from "../../constants/storageKey";
 
-
-interface IRegistrationForm {
+interface ISingInForm {
     username: string;
     email: string;
-    password: string;
+    password: string
 }
 
-export const AuthFormRegistration = () => {
-    const {handleSubmit, register,formState: { errors }} = useForm<IRegistrationForm>();
 
-    const onSubmit: SubmitHandler<IRegistrationForm> = async (data) => {
-    const result = await axios.post(`${baseUrl}${registration}`,data)
-        console.log(result.data);
-    };
+
+ export const UserForm = () => {
+     const {handleSubmit, register,formState: { errors }} = useForm<ISingInForm>();
+
+     const onSubmit: SubmitHandler<ISingInForm> = async (data) =>
+     {const result = await axios.post(`${baseUrl}${login}`,data)
+         Storage.set(token,result.data.token)};
+
     return (
-        <div className={styles.authForm}>
-            <Typography variant="h4" component='h1'>
-                Registration
-            </Typography>
+        <>
             <Typography variant="subtitle1" component='p' gutterBottom={true} className={styles.authFormRegistrationSubtitle}>
             </Typography>
             <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
@@ -41,8 +41,7 @@ export const AuthFormRegistration = () => {
                 />
                 <ErrorMessage errors={errors} name="username" />
                 <TextField
-                    {...register("email", {required: "Required field"})}
-                    type="email"
+                    {...register("email", {required: "Required field", pattern: /[A-Za-z]{3}/})}
                     label="Email"
                     size="small"
                     margin="normal"
@@ -60,9 +59,6 @@ export const AuthFormRegistration = () => {
                     fullWidth={true}
                 />
                 <ErrorMessage errors={errors} name="password" />
-                <Link href="/">
-                    <a>Back to Login</a>
-                </Link>
                 <Button
                     type="submit"
                     variant="contained"
@@ -74,6 +70,6 @@ export const AuthFormRegistration = () => {
                 >
                     Submit</Button>
             </form>
-        </div>
+        </>
     );
 };

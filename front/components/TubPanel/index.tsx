@@ -9,6 +9,8 @@ import {baseUrl, users} from "../../constants/api";
 import {Button} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {BasicModal} from "../modal/Modal";
+import {PostForm} from "../postForm/PostForm";
+import {UserForm} from "../userForm/userForm";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -70,10 +72,10 @@ export default function BasicTabs() {
                     return <Typography component={'span'} key={index}>{item.user_id}</Typography>
                 })}
                     </>
-                <BasicModal value={value}><p>gggggggggggggg</p></BasicModal>
+                <BasicModal value={value}><UserForm/></BasicModal>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <BasicModal value={value}><p>tttttttttttt</p></BasicModal>
+                <BasicModal value={value}><PostForm/></BasicModal>
             </TabPanel>
         </Box>
     );
