@@ -25,7 +25,6 @@ export const PostForm = () => {
         content: '',
         imageUrl: ''
     })
-    console.log(posts)
 
     const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
         const {title,content} = data
@@ -35,7 +34,6 @@ export const PostForm = () => {
         const res = await axios.post(`${baseUrl}${upload}`, formData)
         setPosts({...posts, imageUrl: res.data?.url})
         const test = await axios.post(`${baseUrl}${createPost}`, {title,content,imageUrl})
-        console.log(test)
     }
 
 

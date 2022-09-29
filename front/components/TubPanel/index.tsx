@@ -6,8 +6,6 @@ import Box from '@mui/material/Box';
 import {useEffect} from "react";
 import axios from "axios";
 import {baseUrl, createPost, users} from "../../constants/api";
-import {Button} from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {BasicModal} from "../modal/Modal";
 import {PostForm} from "../postForm/PostForm";
 import {UserForm} from "../userForm/userForm";
@@ -49,7 +47,6 @@ export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
     const [posts, setPosts] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
-    console.log(user)
 
 
     useEffect(() => {
