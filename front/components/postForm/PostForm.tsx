@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import {register} from "tsconfig-paths";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
-import {baseUrl, login, upload} from "../../constants/api";
+import {baseUrl, createPost, login, upload} from "../../constants/api";
 import {Storage} from "../../utils/sessionStorage";
 import {token} from "../../constants/storageKey";
 import {MyImage} from "../image/MyImage";
@@ -20,19 +20,22 @@ interface ICreatePost {
 
 export const PostForm = () => {
     const {handleSubmit, register} = useForm<ICreatePost>();
-    const [post, setPost] = useState({
+    const [posts, setPosts] = useState({
         title: '',
         content: '',
         imageUrl: ''
     })
-    console.log(post)
+    console.log(posts)
 
     const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
+        const {title,content} = data
+        const {imageUrl} = posts
         const formData = new FormData()
         formData.append('image', data.imageUrl[0])
         const res = await axios.post(`${baseUrl}${upload}`, formData)
-        setPost({...post, imageUrl: res.data?.url})
-
+        setPosts({...posts, imageUrl: res.data?.url})
+        const test = await axios.post(`${baseUrl}${createPost}`, {title,content,imageUrl})
+        console.log(test)
     }
 
 

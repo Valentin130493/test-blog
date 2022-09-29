@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import {useEffect} from "react";
 import axios from "axios";
-import {baseUrl, users} from "../../constants/api";
+import {baseUrl, createPost, users} from "../../constants/api";
 import {Button} from "@mui/material";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {BasicModal} from "../modal/Modal";
@@ -47,12 +47,15 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
+    const [posts, setPosts] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
+    console.log(user)
 
 
-    useEffect(()=> {
+    useEffect(() => {
     if(value===0) axios.get(`${baseUrl}${users}`).then((res)=>{setUser(res.data)})
-    },[])
+        if(value===1) axios.get(`${baseUrl}${createPost}`).then((res)=>{setPosts(res.data)})
+    },[value])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -76,6 +79,11 @@ export default function BasicTabs() {
                 <BasicModal value={value}><UserForm/></BasicModal>
             </TabPanel>
             <TabPanel value={value} index={1}>
+                <>
+                {posts && posts.map((item:any,index:number)=>{
+                    return <Typography component={'span'} key={index}>{item.post_id}</Typography>
+                })}
+                </>
                 <BasicModal value={value}><PostForm/></BasicModal>
             </TabPanel>
         </Box>
