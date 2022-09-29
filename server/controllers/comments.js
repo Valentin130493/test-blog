@@ -8,8 +8,7 @@ const createComment = (request, response) => {
         if (error) {
             throw error
         }
-        console.log(results.rows[0])
-
+        //     ?
         response.status(200).json(results.rows[0])
     })
 }

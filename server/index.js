@@ -8,6 +8,15 @@ const cors = require('cors')
 dotenv.config();
 
 const app = express();
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, "uploads")
+    }, filename: (_, file, cb) => {
+        cb(null, file.originalname)
+    },
+})
+
+
 const port = process.env.PORT;
 
 
@@ -20,13 +29,7 @@ app.use(
     })
 )
 
-const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
-        cb(null, "uploads")
-    }, filename: (_, file, cb) => {
-        cb(null, file.originalname)
-    },
-})
+
 const upload = multer({storage})
 app.use('/uploads', express.static('uploads'))
 

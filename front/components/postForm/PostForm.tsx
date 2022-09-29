@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from "../../styles/auth-form.module.css";
 import TextField from "@mui/material/TextField";
 import {ErrorMessage} from "@hookform/error-message";
@@ -6,65 +6,78 @@ import Button from "@mui/material/Button";
 import {register} from "tsconfig-paths";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
-import {baseUrl, login} from "../../constants/api";
+import {baseUrl, login, upload} from "../../constants/api";
 import {Storage} from "../../utils/sessionStorage";
 import {token} from "../../constants/storageKey";
+import {MyImage} from "../image/MyImage";
 
 
-interface ISingInForm {
+interface ICreatePost {
     title: string;
-    description: string;
-    img: any
+    content: string;
+    imageUrl: string
 }
 
 export const PostForm = () => {
-    const {handleSubmit, register,formState: { errors }} = useForm<ISingInForm>();
+    const {handleSubmit, register} = useForm<ICreatePost>();
+    const [post, setPost] = useState({
+        title: '',
+        content: '',
+        imageUrl: ''
+    })
+    console.log(post)
 
-    const onSubmit: SubmitHandler<ISingInForm> = async (data) =>
-    {const result = await axios.post(`${baseUrl}${login}`,data)
-        Storage.set(token,result.data.token)};
+    const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
+        const formData = new FormData()
+        formData.append('image', data.imageUrl[0])
+        const res = await axios.post(`${baseUrl}${upload}`, formData)
+        setPost({...post, imageUrl: res.data?.url})
+
+    }
+
 
     return (
         <>
-        <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-                {...register("title", {required: "Required field", pattern: /[A-Za-z]{3}/})}
-                label="title"
-                size="small"
-                margin="normal"
-                className={styles.authFormInput}
-                fullWidth={true}
-            />
-            <ErrorMessage errors={errors} name="email" />
-            <TextField
-                {...register("description",{required:"Required field",min:3})}
-                multiline
-                maxRows={4}
-                type="text"
-                label="description"
-                size="small"
-                margin="normal"
-                className={styles.authFormInput}
-                fullWidth={true}
-            />
-            <TextField
-                {...register("img",{required:"Required field",min:3})}
-                type="file"
-                size="small"
-                margin="normal"
-                className={styles.authFormInput}
-                fullWidth={true}
-            />
-            <Button
-                type="submit"
-                variant="contained"
-                fullWidth={true}
-                disableElevation={true}
-                sx={{
-                    marginTop: 2
-                }}
-            >
-                Submit</Button>
-        </form>
-</>)
+            <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
+                <TextField
+                    {...register("title", {required: "Required field"})}
+                    label="title"
+                    size="small"
+                    margin="normal"
+                    className={styles.authFormInput}
+                    fullWidth={true}
+                />
+
+                <TextField
+                    {...register("content", {required: "Required field", min: 3})}
+                    multiline
+                    maxRows={4}
+                    type="text"
+                    label="description"
+                    size="small"
+                    margin="normal"
+                    className={styles.authFormInput}
+                    fullWidth={true}
+                />
+                <TextField
+                    {...register("imageUrl", {required: "Required field", min: 3})}
+                    type="file"
+                    size="small"
+                    margin="normal"
+                    className={styles.authFormInput}
+                    fullWidth={true}
+                />
+
+                <Button
+                    type="submit"
+                    variant="contained"
+                    fullWidth={true}
+                    disableElevation={true}
+                    sx={{
+                        marginTop: 2
+                    }}
+                >
+                    Submit</Button>
+            </form>
+        </>)
 };

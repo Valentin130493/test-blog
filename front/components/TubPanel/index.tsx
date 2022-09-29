@@ -48,7 +48,8 @@ function a11yProps(index: number) {
 export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
     const [user, setUser] = React.useState<any>(null);
-    console.log(user)
+
+
     useEffect(()=> {
     if(value===0) axios.get(`${baseUrl}${users}`).then((res)=>{setUser(res.data)})
     },[])

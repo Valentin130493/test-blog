@@ -5,7 +5,15 @@ const getUsers = (request, response) => {
         if (error) {
             throw error
         }
-        response.status(200).json(results.rows)
+        const newUsersArr = []
+        results.rows.forEach((user) => {
+            const userWithoutPassword = {}
+            for (let key in user) {
+                if (key !== "password") userWithoutPassword[key] = user[key]
+            }
+            newUsersArr.push(userWithoutPassword)
+        })
+        response.status(200).json(newUsersArr)
     })
 }
 
