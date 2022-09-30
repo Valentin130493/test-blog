@@ -1,7 +1,7 @@
 const pool = require("../db/db.js");
 
 const getPosts = (request, response) => {
-    pool.query('SELECT * FROM posts ORDER BY post_id ASC', (error, results) => {
+    pool.query('SELECT p.*, json_agg(c) as comments from posts JOIN (SELECT comments.*, to_json(u) as user from comments JOIN users u on u.user_id = comments.user_id) c on c.post_id = p.post_id GROUP BY p.post_id', (error, results) => {
         if (error) {
             throw error
         }
@@ -20,10 +20,10 @@ const getPostById = (request, response) => {
     })
 }
 
-const createPost = (request, response) => {
+const createPost = async (request, response) => {
     const {title, content, imageUrl} = request.body
 
-    pool.query('INSERT INTO posts (title, content, image) VALUES ($1, $2, $3) RETURNING *', [title, content, imageUrl], (error, results) => {
+    await pool.query('INSERT INTO posts (title, content, image) VALUES ($1, $2, $3) RETURNING *', [title, content, imageUrl], (error, results) => {
         if (error) {
             throw error
         }
