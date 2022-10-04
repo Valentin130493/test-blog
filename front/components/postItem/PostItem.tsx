@@ -5,7 +5,7 @@ import {MyImage} from "../image/MyImage";
 import Typography from "@mui/material/Typography";
 import {styles} from "../../constants/styles"
 import CommentItem from "../commentItem/commentItem";
-import {TextField} from "@mui/material";
+import {Skeleton, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 
 const PostItem = ({comments, published_date, content, image, title}: Post) => {
@@ -14,22 +14,22 @@ const PostItem = ({comments, published_date, content, image, title}: Post) => {
     return (
         <Box component={'div'} sx={styles.post.div} style={{margin: "10px 0"}}>
             <Box component={'div'}>
-                <MyImage style={{borderRadius: "20px"}} width={1000} height={500}
-                         src={`https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png`}
-                         alt={title}/>
+                {image ? <MyImage style={{borderRadius: "20px"}} width={1000} height={500}
+                                  src={image}
+                                  alt={title}/> : <Skeleton variant="rectangular" width={1000} height={500}animation="wave"/>}
                 <Typography component={'h1'} style={{textAlign: 'center', fontSize: "36px"}}>{title}</Typography>
-                <Box component={'div'} style={{display: "flex", flexDirection:'column', width: "100%"}}>
-                    <Typography style={{ fontSize: "26px", textAlign: 'center'}} component={'p'}>{content}</Typography>
+                <Box component={'div'} style={{display: "flex", flexDirection: 'column', width: "100%"}}>
+                    <Typography style={{fontSize: "26px", textAlign: 'center'}} component={'p'}>{content}</Typography>
                     <Typography component={'p'}
                                 style={{fontStyle: "italic", fontSize: "20px"}}>published: {day} {time}</Typography>
                 </Box>
             </Box>
             <Box component={'div'}>
-                <Typography component={'h2'} style={{textAlign: 'center', fontSize: "36px"}} >Comments </Typography>
+                <Typography component={'h2'} style={{textAlign: 'center', fontSize: "36px"}}>Comments </Typography>
                 {comments && comments.map((comment: Comments, index: number) => {
                     return <CommentItem key={index} {...comment} />
                 })}
-                <Box component={"div"} style={{display: "flex", justifyContent: 'space-between',}}>
+                <Box component={"div"} style={{display: "flex", justifyContent: 'space-between'}}>
                     <TextField style={{width: "70%"}}/>
                     <Button variant={"contained"} style={{marginLeft: "10px"}}>add comment</Button>
                 </Box>
