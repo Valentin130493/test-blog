@@ -30,14 +30,7 @@ const createPost = async (request, response) => {
         response.status(200).json(results.rows[0])
     })
 }
-const getPostsWithComments = (request, response) => {
-    pool.query('SELECT p. *, json_agg(c) as comments from posts p JOIN (SELECT comments. *, to_json(u.username) as user from comments JOIN users u on u.user_id = comments.user_id) c on c.post_id = p.post_id GROUP BY p.post_id', (error, results) => {
-        if (error) {
-            throw error
-        }
-        response.status(200).json(results.rows)
-    })
-}
+
 
 const updatePost = (request, response) => {
     const id = parseInt(request.params.id)
@@ -72,5 +65,4 @@ module.exports = {
     createPost,
     updatePost,
     deletePost,
-    getPostsWithComments
 }
