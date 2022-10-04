@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from "axios";
-import {baseUrl, login, register} from "../../constants/api";
+import {baseUrl, login, registration} from "../../constants/api";
 
 interface UserDataProps {
     email: string,
@@ -31,7 +31,7 @@ export const userRegister = createAsyncThunk(
     'user/register',
     async (userData: UserDataProps, thunkAPI) => {
         try {
-            return await axios.post(`${baseUrl}${register}`, userData);
+            return await axios.post(`${baseUrl}${registration}`, userData);
         } catch (error) {
             return thunkAPI.rejectWithValue({error: error});
         }

@@ -3,7 +3,7 @@ import Header from "../../components/header/Header";
 import axios from "axios";
 import {baseUrl, postsWithComments} from "../../constants/api";
 import {Post} from "../../types/postTypes";
-import PostItem from "../../components/postItem/PostItem";
+import PostItemUser from "../../components/postItemUser/PostItemUser";
 
 interface UserPageProps {
     posts: Post[]
@@ -17,7 +17,7 @@ const UserPage: React.FC<UserPageProps> = ({posts}) => {
             <Header username="Vasay Krasavtsev"/>
             <>
                 {posts.map((post, index: number) => {
-                    return <PostItem key={index} {...post}/>
+                    return <PostItemUser key={index} {...post}/>
                 })}
             </>
         </>

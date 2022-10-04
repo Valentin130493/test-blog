@@ -8,7 +8,7 @@ import CommentItem from "../commentItem/commentItem";
 import {Skeleton, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 
-const PostItem = ({comments, published_date, content, image, title}: Post) => {
+const PostItemUser = ({comments, published_date, content, image, title}: Post) => {
     const day = published_date.substring(0, 10).split('-').reverse().join('-')
     const time = published_date.substring(11, 19)
     return (
@@ -16,7 +16,8 @@ const PostItem = ({comments, published_date, content, image, title}: Post) => {
             <Box component={'div'}>
                 {image ? <MyImage style={{borderRadius: "20px"}} width={1000} height={500}
                                   src={image}
-                                  alt={title}/> : <Skeleton variant="rectangular" width={1000} height={500}animation="wave"/>}
+                                  alt={title}/> :
+                    <Skeleton variant="rectangular" width={1000} height={500} animation="wave"/>}
                 <Typography component={'h1'} style={{textAlign: 'center', fontSize: "36px"}}>{title}</Typography>
                 <Box component={'div'} style={{display: "flex", flexDirection: 'column', width: "100%"}}>
                     <Typography style={{fontSize: "26px", textAlign: 'center'}} component={'p'}>{content}</Typography>
@@ -39,4 +40,4 @@ const PostItem = ({comments, published_date, content, image, title}: Post) => {
         ;
 };
 
-export default PostItem;
+export default PostItemUser;
