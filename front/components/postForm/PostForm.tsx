@@ -25,7 +25,7 @@ export const PostForm = () => {
         content: '',
         imageUrl: ''
     })
-    console.log(post)
+
 
     const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
         const formData = new FormData()

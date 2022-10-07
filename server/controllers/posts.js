@@ -8,15 +8,32 @@ const getPosts = (request, response) => {
         response.status(200).json(results.rows)
     })
 }
-
-const getPostById = (request, response) => {
-    const id = parseInt(request.params.id)
-
-    pool.query(`SELECT * FROM posts WHERE id = ${id}`, [id], (error, results) => {
+const getPostsWithComments = (request, response) => {
+    console.log(request, "1")
+    pool.query('SELECT p. *, json_agg(c) as comments from posts p JOIN (SELECT comments. *, to_json(u) as user from comments JOIN users u on u.user_id = comments.user_id) c on c.post_id = p.post_id GROUP BY p.post_id', (error, results) => {
         if (error) {
             throw error
         }
         response.status(200).json(results.rows)
+    })
+}
+const getPostById = (request, response) => {
+    const id = parseInt(request.params.id)
+
+    pool.query('SELECT p. *, json_agg(c) as comments from posts p JOIN (SELECT comments. *, to_json(u.username) as user from comments JOIN users u on u.user_id = comments.user_id) c on c.post_id = p.post_id GROUP BY p.post_id', (error, results) => {
+        if (error) {
+            throw error
+        }
+
+        const post = results.rows.filter((item) => item.post_id === id)
+        if (post.length === 0) {
+            response.status(200).json(post)
+        } else {
+            response.status(200).json(post[0])
+        }
+
+        console.log(post)
+
     })
 }
 
@@ -48,6 +65,7 @@ const updatePost = (request, response) => {
     )
 }
 
+
 const deletePost = (request, response) => {
     const id = parseInt(request.params.id)
 
@@ -65,4 +83,5 @@ module.exports = {
     createPost,
     updatePost,
     deletePost,
+    getPostsWithComments
 }
