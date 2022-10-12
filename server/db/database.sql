@@ -9,7 +9,7 @@ CREATE TABLE posts (
      post_id serial PRIMARY KEY,
      title VARCHAR ( 255 ) NOT NULL,
      content VARCHAR ( 520 ),
-     image VARCHAR ( 255 ),
+     imageUrl VARCHAR ( 255 ),
      published_date timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
