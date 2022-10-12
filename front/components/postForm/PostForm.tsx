@@ -20,20 +20,13 @@ interface ICreatePost {
 
 export const PostForm = () => {
     const {handleSubmit, register} = useForm<ICreatePost>();
-    const [posts, setPosts] = useState({
-        title: '',
-        content: '',
-        imageUrl: ''
-    })
 
     const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
-        const {title,content} = data
-        const {imageUrl} = posts
-        const formData = new FormData()
-        formData.append('image', data.imageUrl[0])
+        const formData = new FormData();
+       formData.append('image',data.imageUrl[0])
         const res = await axios.post(`${baseUrl}${upload}`, formData)
-        setPosts({...posts, imageUrl: res.data?.url})
-        const test = await axios.post(`${baseUrl}${createPost}`, {title,content,imageUrl})
+        console.log(res)
+        const res1 = await axios.post(`${baseUrl}${createPost}`, {title: data.title,content: data.content,imageUrl: res?.data.url})
     }
 
 
@@ -79,6 +72,7 @@ export const PostForm = () => {
                     }}
                 >
                     Submit</Button>
+
             </form>
         </>)
 };

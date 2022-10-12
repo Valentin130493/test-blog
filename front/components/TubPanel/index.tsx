@@ -9,11 +9,20 @@ import {baseUrl, createPost, users} from "../../constants/api";
 import {BasicModal} from "../modal/Modal";
 import {PostForm} from "../postForm/PostForm";
 import {UserForm} from "../userForm/userForm";
+import {ImageList, ImageListItem} from "@mui/material";
+import {PostItem} from "../postItem/PostItem";
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
+}
+
+interface ItemMapInterface {
+    post_id: number
+    title: string;
+    content: string;
+    imageUrl: string;
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -70,16 +79,17 @@ export default function BasicTabs() {
             <TabPanel value={value} index={0}>
                 <>
                 {user && user.map((item:any,index:number)=>{
-                    return <Typography component={'span'} key={index}>{item.user_id}</Typography>
+                    return <Typography component={'span'} key={index}><div><p>{item.user_id}</p>
+                        <p>{item.username}</p>
+                        <p>{item.email}</p>
+                    </div></Typography>
                 })}
                     </>
                 <BasicModal value={value}><UserForm/></BasicModal>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <>
-                {posts && posts.map((item:any,index:number)=>{
-                    return <Typography component={'span'} key={index}>{item.post_id}</Typography>
-                })}
+                {posts && posts.map((item:ItemMapInterface,index:number)=> <PostItem key={index} {...item}/>)}
                 </>
                 <BasicModal value={value}><PostForm/></BasicModal>
             </TabPanel>
