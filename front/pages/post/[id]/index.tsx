@@ -11,17 +11,20 @@ const Index: React.FC = () => {
     const id = router.query.id
     const [loading, setLoading] = React.useState<boolean>(false)
     const [post, setPost] = React.useState<any>(null)
-
+    console.log(id, "5")
 
     React.useEffect(() => {
         setLoading(true)
-        axios.get(`${baseUrl}${allPosts}/${id}`).then((res) => setPost(res.data))
+        if (id !== undefined) {
+            axios.get(`${baseUrl}${allPosts}/${id}`).then((res) => setPost(res.data))
+        }
+        console.log("2")
+        console.log(post, '3')
         setTimeout(() => setLoading(false), 1500)
 
-    }, [])
+    }, [id])
 
 
-    console.log(post)
     return (
         <>
             {loading ? <>Loading data...</> : <PostItemUser {...post} />}

@@ -6,3 +6,4 @@ export const comment = "comment"
 export const posts = "posts"
 export const upload = 'upload'
 export const createPost = 'admin/posts'
+export const getPosts= "posts"

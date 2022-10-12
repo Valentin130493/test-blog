@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import {register} from "tsconfig-paths";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
-import {baseUrl, login, upload} from "../../constants/api";
+import {baseUrl, createPost, login, upload} from "../../constants/api";
 import {Storage} from "../../utils/sessionStorage";
 import {token} from "../../constants/storageKey";
 import {MyImage} from "../image/MyImage";
@@ -15,7 +15,7 @@ import {MyImage} from "../image/MyImage";
 interface ICreatePost {
     title: string;
     content: string;
-    imageUrl: string
+    image_url: string
 }
 
 export const PostForm = () => {
@@ -23,15 +23,25 @@ export const PostForm = () => {
     const [post, setPost] = useState({
         title: '',
         content: '',
-        imageUrl: ''
+        image_url: ''
     })
     console.log(post)
 
     const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
+        const {title, content} = data
         const formData = new FormData()
-        formData.append('image', data.imageUrl[0])
+        formData.append('image', data.image_url[0])
         const res = await axios.post(`${baseUrl}${upload}`, formData)
-        setPost({...post, imageUrl: res.data?.url})
+        const image_url = res.data?.url
+        setPost({...post, image_url: image_url, title: title, content: content})
+
+        const newPost = await axios.post(`${baseUrl}${createPost}`, {
+            title: title,
+            content: content,
+            image_url: image_url
+        })
+        console.log(newPost, "new post")
+
 
     }
 
@@ -60,7 +70,7 @@ export const PostForm = () => {
                     fullWidth={true}
                 />
                 <TextField
-                    {...register("imageUrl", {required: "Required field", min: 3})}
+                    {...register("image_url", {required: "Required field", min: 3})}
                     type="file"
                     size="small"
                     margin="normal"

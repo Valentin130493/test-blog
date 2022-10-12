@@ -38,11 +38,11 @@ const getPostById = (request, response) => {
 }
 
 const createPost = async (request, response) => {
-    const {title, content, imageUrl} = request.body
+    const {title, content, image_url} = request.body
 
     console.log(request.body)
-    pool.query('INSERT INTO posts (title, content, imageUrl) VALUES ($1, $2, $3) RETURNING *', [title, content, imageUrl], (error, results) => {
- 
+    pool.query('INSERT INTO posts (title, content, image_url) VALUES ($1, $2, $3) RETURNING *', [title, content, image_url], (error, results) => {
+
         if (error) {
             throw error
         }
@@ -53,16 +53,16 @@ const createPost = async (request, response) => {
 
 const updatePost = (request, response) => {
     const id = parseInt(request.params.id)
-    const {name, email} = request.body
+    const {title, content, image_url} = request.body
 
     pool.query(
-        'UPDATE posts SET name = $1, email = $2 WHERE id = $3',
-        [name, email, id],
+        'UPDATE posts SET title = $1, content = $2 WHERE post_id = $3',
+        [title, content, image_url],
         (error, results) => {
             if (error) {
                 throw error
             }
-            response.status(200).send(`User modified with ID: ${id}`)
+            response.status(200).send(`Post modified with ID: ${id}`)
         }
     )
 }
@@ -71,7 +71,7 @@ const updatePost = (request, response) => {
 const deletePost = (request, response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('DELETE FROM posts WHERE id = $1', [id], (error, results) => {
+    pool.query('DELETE FROM posts WHERE post_id = $1', [id], (error, results) => {
         if (error) {
             throw error
         }

@@ -7,16 +7,16 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {PostForm} from "../postForm/PostForm";
 
 
-export const BasicModal = ({children,value}:any) => {
+export const BasicModal = ({children, value}: any) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
         <>
-            <Button onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
+            <Button  onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
             >
-                {value === 0 ? 'create user':'create postItemUser'}
+                {value === 0 ? 'create user' : 'create post'}
             </Button>
             <Modal
                 open={open}
