@@ -14,6 +14,7 @@ router.put('/admin/users', UserController.updateUser)
 router.delete('/admin/users/:id', UserController.deleteUser)
 
 router.get('/admin/posts', PostsController.getPosts)
+router.get('/admin/posts/comments', PostsController.getPostsWithComments)
 router.get('/admin/posts/:id', PostsController.getPostById)
 router.post('/admin/posts', PostsController.createPost)
 router.put('/admin/posts', PostsController.updatePost)

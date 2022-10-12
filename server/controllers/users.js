@@ -1,19 +1,11 @@
 const pool = require("../db/db.js");
 
 const getUsers = (request, response) => {
-    pool.query('SELECT * FROM users ORDER BY user_id ASC', (error, results) => {
+    pool.query('SELECT user_id, username, email  FROM users ORDER BY user_id ASC', (error, results) => {
         if (error) {
             throw error
         }
-        const newUsersArr = []
-        results.rows.forEach((user) => {
-            const userWithoutPassword = {}
-            for (let key in user) {
-                if (key !== "password") userWithoutPassword[key] = user[key]
-            }
-            newUsersArr.push(userWithoutPassword)
-        })
-        response.status(200).json(newUsersArr)
+        response.status(200).json(results.rows)
     })
 }
 
