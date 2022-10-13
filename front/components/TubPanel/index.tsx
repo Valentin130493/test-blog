@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import {useEffect} from "react";
 import axios from "axios";
-import {baseUrl, createPost, users} from "../../constants/api";
+import {baseUrl, createPost, getPosts, users} from "../../constants/api";
 import {BasicModal} from "../modal/Modal";
 import {PostForm} from "../postForm/PostForm";
 import {UserForm} from "../userForm/userForm";
@@ -22,11 +22,11 @@ interface ItemMapInterface {
     post_id: number
     title: string;
     content: string;
-    imageUrl: string;
+    image_url: string;
 }
 
 function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
+    const {children, value, index, ...other} = props;
 
     return (
         <div
@@ -37,7 +37,7 @@ function TabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{p: 3}}>
                     <Typography>{children}</Typography>
                 </Box>
             )}
@@ -59,17 +59,21 @@ export default function BasicTabs() {
 
 
     useEffect(() => {
-    if(value===0) axios.get(`${baseUrl}${users}`).then((res)=>{setUser(res.data)})
-        if(value===1) axios.get(`${baseUrl}${createPost}`).then((res)=>{setPosts(res.data)})
-    },[value])
+        if (value === 0) axios.get(`${baseUrl}${users}`).then((res) => {
+            setUser(res.data)
+        })
+        if (value === 1) axios.get(`${baseUrl}${getPosts}`).then((res) => {
+            setPosts(res.data)
+        })
+    }, [value])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider',width: '100%',bgcolor: 'grey' }}>
+        <Box sx={{width: '100%'}}>
+            <Box sx={{borderBottom: 1, borderColor: 'divider', width: '100%', bgcolor: 'grey'}}>
                 <Tabs indicatorColor="secondary"
                       textColor="inherit" variant="fullWidth" centered value={value} onChange={handleChange}>
                     <Tab label="Users" {...a11yProps(0)} />
@@ -78,18 +82,20 @@ export default function BasicTabs() {
             </Box>
             <TabPanel value={value} index={0}>
                 <>
-                {user && user.map((item:any,index:number)=>{
-                    return <Typography component={'span'} key={index}><div><p>{item.user_id}</p>
-                        <p>{item.username}</p>
-                        <p>{item.email}</p>
-                    </div></Typography>
-                })}
-                    </>
+                    {user && user.map((item: any, index: number) => {
+                        return <Typography component={'span'} key={index}>
+                            <div><p>{item.user_id}</p>
+                                <p>{item.username}</p>
+                                <p>{item.email}</p>
+                            </div>
+                        </Typography>
+                    })}
+                </>
                 <BasicModal value={value}><UserForm/></BasicModal>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <>
-                {posts && posts.map((item:ItemMapInterface,index:number)=> <PostItem key={index} {...item}/>)}
+                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item}/>)}
                 </>
                 <BasicModal value={value}><PostForm/></BasicModal>
             </TabPanel>

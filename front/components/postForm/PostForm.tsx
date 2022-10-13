@@ -15,18 +15,31 @@ import {MyImage} from "../image/MyImage";
 interface ICreatePost {
     title: string;
     content: string;
-    imageUrl: string
+    image_url: string
 }
 
 export const PostForm = () => {
     const {handleSubmit, register} = useForm<ICreatePost>();
+    const [post, setPost] = useState({
+        title: '',
+        content: '',
+        image_url: ''
+    })
+    console.log(post)
 
     const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
-        const formData = new FormData();
-       formData.append('image',data.imageUrl[0])
+        const {title, content} = data
+        const formData = new FormData()
+        formData.append('image', data.image_url[0])
         const res = await axios.post(`${baseUrl}${upload}`, formData)
-        console.log(res)
-        const res1 = await axios.post(`${baseUrl}${createPost}`, {title: data.title,content: data.content,imageUrl: res?.data.url})
+        const image_url = res.data?.url
+        setPost({...post, image_url: image_url, title: title, content: content})
+
+        await axios.post(`${baseUrl}${createPost}`, {
+            title: title,
+            content: content,
+            image_url: image_url
+        })
     }
 
 
@@ -54,7 +67,7 @@ export const PostForm = () => {
                     fullWidth={true}
                 />
                 <TextField
-                    {...register("imageUrl", {required: "Required field", min: 3})}
+                    {...register("image_url", {required: "Required field", min: 3})}
                     type="file"
                     size="small"
                     margin="normal"
@@ -72,7 +85,6 @@ export const PostForm = () => {
                     }}
                 >
                     Submit</Button>
-
             </form>
         </>)
 };
