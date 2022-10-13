@@ -54,9 +54,9 @@ const createPost = async (request, response) => {
 const updatePost = (request, response) => {
     const id = parseInt(request.params.id)
     const {title, content, image_url} = request.body
-
+    console.log(id)
     pool.query(
-        'UPDATE posts SET title = $1, content = $2 WHERE post_id = $3',
+        `UPDATE posts SET title = $1, content = $2, image_url = $3 WHERE post_id = ${id}`,
         [title, content, image_url],
         (error, results) => {
             if (error) {
