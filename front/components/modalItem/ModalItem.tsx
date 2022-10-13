@@ -8,8 +8,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useForm} from "react-hook-form";
 import axios from "axios";
-import {baseUrl, createPost} from "../../constants/api";
+import {baseUrl, createPost, upload} from "../../constants/api";
 import {Delete} from "@mui/icons-material";
+import {MyImage} from "../image/MyImage";
 
 
 interface ItemMapInterface {
@@ -25,14 +26,21 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [image, setImage] = useState(image_url)
 
     const deletePost = (id: number) => {
         axios.delete(`${baseUrl}${createPost}/${id}`)
     }
 
-    const onSubmit = (data: ItemMapInterface) => {
-        console.log(data);
+    const onSubmit = async (data: ItemMapInterface) => {
+        const {title, content} = data
+        const formData = new FormData()
+        formData.append('image', data.image_url[0])
+        const res = await axios.post(`${baseUrl}${upload}`, formData)
+        const photo = res.data?.url
+        await axios.put(`${baseUrl}${createPost}/${post_id}`, {title: title, content: content, image_url: photo});
     };
+
     return (
         <>
             <Button style={{margin: "0 10px"}} onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
@@ -56,7 +64,10 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
                     <>
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <TextField
-                                {...register("title", {onChange: (e) => setValue(e.target.value), value: `${title}`})}
+                                {...register("title", {
+                                    onChange: (e) => setValue("title", e.target.value),
+                                    value: `${title}`
+                                })}
                                 label="title"
                                 size="small"
                                 margin="normal"
@@ -65,7 +76,7 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
 
                             <TextField
                                 {...register("content", {
-                                    onChange: (e) => setValue(e.target.value),
+                                    onChange: (e) => setValue("content", e.target.value),
                                     value: `${content}`,
                                     required: "Required field",
                                     min: 3
@@ -78,13 +89,16 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
                                 margin="normal"
                                 fullWidth={true}
                             />
+
+                            {image && <img style={{width:"100px",height:"100px"}} src={`${baseUrl}${image}`}/>}
                             <TextField
-                                {...register("imageUrl", {required: "Required field", min: 3})}
+                                {...register("image_url", {})}
                                 type="file"
                                 size="small"
                                 margin="normal"
                                 fullWidth={true}
                             />
+
 
                             <Button
                                 type="submit"

@@ -14,8 +14,6 @@ export const PostItem: FC<TabPanelProps> = ({title, content, image_url, post_id}
     const [, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
 
-    console.log(`${baseUrl}${image_url}`)
-    console.log(post_id)
     return (
         <>
             <div onClick={() => handleOpen} style={{

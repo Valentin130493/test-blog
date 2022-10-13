@@ -35,14 +35,11 @@ export const PostForm = () => {
         const image_url = res.data?.url
         setPost({...post, image_url: image_url, title: title, content: content})
 
-        const newPost = await axios.post(`${baseUrl}${createPost}`, {
+        await axios.post(`${baseUrl}${createPost}`, {
             title: title,
             content: content,
             image_url: image_url
         })
-        console.log(newPost, "new post")
-
-
     }
 
 
