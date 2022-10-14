@@ -16,9 +16,8 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({posts}) => {
     const router = useRouter()
-
+    console.log(posts)
     const handleClick = (id: number) => {
-        console.log(id)
         router.push(`post/${id}`)
     }
     return (
@@ -30,21 +29,23 @@ const UserPage: React.FC<UserPageProps> = ({posts}) => {
                     {(posts.length === 0 ? Array.from(new Array(3)) : posts).map((item, index) => (
                         <Box key={index} sx={{width: 250, marginRight: 1, my: 5}}
                              onClick={() => handleClick(item.post_id)}>
-                            {item.image ? (
+                            {item.image_url ? (
                                 <img
                                     style={{width: 250, height: 150}}
                                     alt={item.title}
-                                    src={item.image}
+                                    src={`${baseUrl}${item.image_url}`}
                                 />
                             ) : (
                                 <Skeleton variant="rectangular" width={250} height={150}/>
                             )}
                             {item ? (
                                 <Box sx={{pr: 2}}>
-                                    <Typography style={{textAlign:'center',fontSize:'24px'}} gutterBottom variant="body2">
+                                    <Typography style={{textAlign: 'center', fontSize: '24px'}} gutterBottom
+                                                variant="body2">
                                         {item.title}
                                     </Typography>
-                                    <Typography style={{textAlign:'center'}} display="block" variant="caption" color="text.secondary">
+                                    <Typography style={{textAlign: 'center'}} display="block" variant="caption"
+                                                color="text.secondary">
                                         {item.content.substring(0, 50)}...
                                     </Typography>
 

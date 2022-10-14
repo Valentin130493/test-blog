@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {styles} from "../../constants/styles";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {PostForm} from "../postForm/PostForm";
 
 
 export const BasicModal = ({children, value}: any) => {
@@ -14,7 +13,7 @@ export const BasicModal = ({children, value}: any) => {
 
     return (
         <>
-            <Button  onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
+            <Button style={{margin: "0 10px"}} onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
             >
                 {value === 0 ? 'create user' : 'create post'}
             </Button>

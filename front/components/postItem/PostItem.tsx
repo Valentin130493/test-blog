@@ -7,10 +7,11 @@ interface TabPanelProps {
     title: string;
     content: string;
     image_url: string;
+    fetchData: any
 }
 
 
-export const PostItem: FC<TabPanelProps> = ({title, content, image_url, post_id}) => {
+export const PostItem: FC<TabPanelProps> = ({title, content, image_url, post_id,fetchData}) => {
     const [, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
 
@@ -28,7 +29,7 @@ export const PostItem: FC<TabPanelProps> = ({title, content, image_url, post_id}
                 <p style={{fontSize: "24px", width: "250px",}}>{title}</p>
                 <p style={{fontSize: "20px", width: "250px"}}>{content.substring(0, 50)}</p>
             </div>
-            <ModalItem post_id={post_id} content={content} title={title} image_url={image_url}/>
+            <ModalItem post_id={post_id} content={content} title={title} image_url={image_url} fetchData={fetchData}/>
         </>
     );
 };

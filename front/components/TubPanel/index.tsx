@@ -5,12 +5,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import {useEffect} from "react";
 import axios from "axios";
-import {baseUrl, createPost, getPosts, users} from "../../constants/api";
+import {baseUrl, users} from "../../constants/api";
 import {BasicModal} from "../modal/Modal";
 import {PostForm} from "../postForm/PostForm";
 import {UserForm} from "../userForm/userForm";
-import {ImageList, ImageListItem} from "@mui/material";
 import {PostItem} from "../postItem/PostItem";
+import usePosts from "../../hooks/usePosts";
+import {fetchData} from "next-auth/client/_utils";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -56,15 +57,21 @@ export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
     const [posts, setPosts] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
+    const {getPost} = usePosts()
 
 
-    useEffect(() => {
+    const fetchData = async () => {
         if (value === 0) axios.get(`${baseUrl}${users}`).then((res) => {
             setUser(res.data)
         })
-        if (value === 1) axios.get(`${baseUrl}${getPosts}`).then((res) => {
-            setPosts(res.data)
+        if (value === 1) await getPost().then((res) => {
+            setPosts(res)
         })
+    }
+
+
+    useEffect(() => {
+        fetchData()
     }, [value])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -81,6 +88,7 @@ export default function BasicTabs() {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
+                <BasicModal value={value}><UserForm/></BasicModal>
                 <>
                     {user && user.map((item: any, index: number) => {
                         return <Typography component={'span'} key={index}>
@@ -91,13 +99,15 @@ export default function BasicTabs() {
                         </Typography>
                     })}
                 </>
-                <BasicModal value={value}><UserForm/></BasicModal>
+
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <>
-                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item}/>)}
-                </>
                 <BasicModal value={value}><PostForm/></BasicModal>
+                <>
+                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item}
+                                                                                             fetchData={fetchData}/>)}
+                </>
+
             </TabPanel>
         </Box>
     );

@@ -1,7 +1,6 @@
 import React from 'react';
 import {Comments, Post} from "../../types/postTypes";
 import Box from "@mui/material/Box";
-import {MyImage} from "../image/MyImage";
 import Typography from "@mui/material/Typography";
 import {styles} from "../../constants/styles"
 import CommentItem from "../commentItem/commentItem";
@@ -16,16 +15,15 @@ interface ICreateComment {
     content: string
 }
 
-const PostItemUser = ({comments, published_date, content, image, title}: Post) => {
-
+const PostItemUser = ({comments, published_date, content, image_url, title}: Post) => {
+    console.log(image_url)
     const router = useRouter()
     const post_id = router.query.id
     const postId = parseInt(post_id as string)
     const [state, setState] = React.useState<Comments[]>()
     const [post, setPost] = React.useState<Post>()
-    const condition = (published_date || content || image || title) === undefined
-    console.log(post)
-    console.log(state)
+    const condition = (published_date || content || image_url || title) === undefined
+
     React.useEffect(() => {
         setState(comments);
         if (condition) {
@@ -46,14 +44,13 @@ const PostItemUser = ({comments, published_date, content, image, title}: Post) =
     }
     const day = condition ? post?.published_date?.substring(0, 10).split('-').reverse().join('-') : published_date?.substring(0, 10).split('-').reverse().join('-')
     const time = condition ? post?.published_date?.substring(11, 19) : published_date?.substring(11, 19)
+
     return (
         <Box component={'div'} sx={styles.post.div} style={{margin: "10px 0"}}>
             <Box component={'div'}>
-                {image ? <MyImage style={{borderRadius: "20px"}} width={1000} height={500}
-                                  src={condition ? post?.image : image}
-                                  alt={title}/> :
-                    <Skeleton variant="rectangular" style={{borderRadius: "20px"}} width={1000} height={500}
-                              animation="wave"/>}
+                <img style={{borderRadius: "20px"}} width={1000} height={500}
+                     src={condition ? `${baseUrl}${post?.image_url}` : `${baseUrl}${image_url}`}
+                     alt={title}/>
 
                 {(post?.published_date || published_date) && <Box component={'div'}
                                                                   style={{

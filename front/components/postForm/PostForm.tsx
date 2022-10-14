@@ -1,15 +1,10 @@
 import React, {useState} from 'react';
 import styles from "../../styles/auth-form.module.css";
 import TextField from "@mui/material/TextField";
-import {ErrorMessage} from "@hookform/error-message";
 import Button from "@mui/material/Button";
-import {register} from "tsconfig-paths";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
 import {baseUrl, createPost, login, upload} from "../../constants/api";
-import {Storage} from "../../utils/sessionStorage";
-import {token} from "../../constants/storageKey";
-import {MyImage} from "../image/MyImage";
 
 
 interface ICreatePost {

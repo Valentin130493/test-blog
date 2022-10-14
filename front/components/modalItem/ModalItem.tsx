@@ -10,7 +10,7 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 import {baseUrl, createPost, upload} from "../../constants/api";
 import {Delete} from "@mui/icons-material";
-import {MyImage} from "../image/MyImage";
+import usePosts from "../../hooks/usePosts";
 
 
 interface ItemMapInterface {
@@ -18,28 +18,39 @@ interface ItemMapInterface {
     title: string;
     content: string;
     image_url: string;
+    fetchData: () => void;
 }
 
-export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_url}) => {
+export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_url, fetchData}) => {
     const {handleSubmit, register, formState: {errors}, setValue} = useForm<ItemMapInterface>();
-
+    const {deletePost, updatePost, getPost} = usePosts()
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [image, setImage] = useState(image_url)
 
-    const deletePost = (id: number) => {
-        axios.delete(`${baseUrl}${createPost}/${id}`)
+    const handleDelete = async (id: number) => {
+        await deletePost(id)
     }
 
     const onSubmit = async (data: ItemMapInterface) => {
-        const {title, content} = data
-        const formData = new FormData()
-        formData.append('image', data.image_url[0])
-        const res = await axios.post(`${baseUrl}${upload}`, formData)
-        const photo = res.data?.url
-        await axios.put(`${baseUrl}${createPost}/${post_id}`, {title: title, content: content, image_url: photo});
+        const {title, content, image_url} = data
+        const condition = image.includes(`${image_url}`)
+        if (!condition) {
+            const formData = new FormData()
+            formData.append('image', data.image_url[0])
+            const res = await axios.post(`${baseUrl}${upload}`, formData)
+            const photo = res.data?.url
+            setImage(photo)
+            await updatePost(post_id, {title: title, content: content, image_url: photo});
+            await fetchData()
+        } else {
+            await updatePost(post_id, {title: title, content: content, image_url: image});
+            await fetchData()
+        }
+        handleClose()
     };
+
 
     return (
         <>
@@ -48,7 +59,7 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
                 {'edit'}
             </Button>
 
-            <Button style={{marginRight: "10px"}} onClick={() => deletePost(post_id)} variant="outlined"
+            <Button style={{marginRight: "10px"}} onClick={() => handleDelete(post_id)} variant="outlined"
                     startIcon={<Delete/>}
             >
                 {'delete'}
@@ -90,9 +101,9 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
                                 fullWidth={true}
                             />
 
-                            {image && <img style={{width:"100px",height:"100px"}} src={`${baseUrl}${image}`}/>}
+                            {image && <img style={{width: "100px", height: "100px"}} src={`${baseUrl}${image}`}/>}
                             <TextField
-                                {...register("image_url", {})}
+                                {...register("image_url", {value: `${image}`})}
                                 type="file"
                                 size="small"
                                 margin="normal"
