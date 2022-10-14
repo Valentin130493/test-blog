@@ -13,7 +13,7 @@ export const BasicModal = ({children, value}: any) => {
 
     return (
         <>
-            <Button  onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
+            <Button style={{margin: "0 10px"}} onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
             >
                 {value === 0 ? 'create user' : 'create post'}
             </Button>

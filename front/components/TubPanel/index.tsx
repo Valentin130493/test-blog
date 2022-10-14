@@ -58,18 +58,19 @@ export default function BasicTabs() {
     const [posts, setPosts] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
     const {getPost} = usePosts()
-    console.log(getPost)
 
-const fetchData = async () => {
-    if (value === 0) axios.get(`${baseUrl}${users}`).then((res) => {
-        setUser(res.data)
-    })
-    // if (value === 1) setPosts(getPost)
+
+    const fetchData = async () => {
+        if (value === 0) axios.get(`${baseUrl}${users}`).then((res) => {
+            setUser(res.data)
+        })
+        if (value === 1) await getPost().then((res) => {
+            setPosts(res)
+        })
     }
 
 
     useEffect(() => {
-        getPost().then((res)=>{setPosts(res)})
         fetchData()
     }, [value])
 
@@ -87,6 +88,7 @@ const fetchData = async () => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
+                <BasicModal value={value}><UserForm/></BasicModal>
                 <>
                     {user && user.map((item: any, index: number) => {
                         return <Typography component={'span'} key={index}>
@@ -97,13 +99,15 @@ const fetchData = async () => {
                         </Typography>
                     })}
                 </>
-                <BasicModal value={value}><UserForm/></BasicModal>
+
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <>
-                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item} fetchData={fetchData}/>)}
-                </>
                 <BasicModal value={value}><PostForm/></BasicModal>
+                <>
+                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item}
+                                                                                             fetchData={fetchData}/>)}
+                </>
+
             </TabPanel>
         </Box>
     );

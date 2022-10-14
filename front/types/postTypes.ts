@@ -1,6 +1,6 @@
 export interface Post {
     content: string;
-    image: string;
+    image_url: string;
     post_id: number;
     published_date: string;
     title: string;

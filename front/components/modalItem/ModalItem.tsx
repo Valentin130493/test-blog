@@ -18,12 +18,12 @@ interface ItemMapInterface {
     title: string;
     content: string;
     image_url: string;
-    fetchData: any
+    fetchData: () => void;
 }
 
-export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_url,fetchData}) => {
+export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_url, fetchData}) => {
     const {handleSubmit, register, formState: {errors}, setValue} = useForm<ItemMapInterface>();
-    const {deletePost,updatePost,getPost} = usePosts()
+    const {deletePost, updatePost, getPost} = usePosts()
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -34,21 +34,20 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
     }
 
     const onSubmit = async (data: ItemMapInterface) => {
-        const {title, content,image_url} = data
+        const {title, content, image_url} = data
         const condition = image.includes(`${image_url}`)
-        if(!condition) {
+        if (!condition) {
             const formData = new FormData()
             formData.append('image', data.image_url[0])
             const res = await axios.post(`${baseUrl}${upload}`, formData)
             const photo = res.data?.url
             setImage(photo)
-           await updatePost(post_id,{title: title, content: content, image_url: photo});
-            await getPost()
+            await updatePost(post_id, {title: title, content: content, image_url: photo});
+            await fetchData()
+        } else {
+            await updatePost(post_id, {title: title, content: content, image_url: image});
+            await fetchData()
         }
-        else  {
-       await updatePost(post_id, {title: title, content: content, image_url: image});
-           await getPost()
-    }
         handleClose()
     };
 
@@ -102,9 +101,9 @@ export const ModalItem: FC<ItemMapInterface> = ({post_id, title, content, image_
                                 fullWidth={true}
                             />
 
-                            {image && <img style={{width:"100px",height:"100px"}} src={`${baseUrl}${image}`}/>}
+                            {image && <img style={{width: "100px", height: "100px"}} src={`${baseUrl}${image}`}/>}
                             <TextField
-                                {...register("image_url", {value:`${image}`})}
+                                {...register("image_url", {value: `${image}`})}
                                 type="file"
                                 size="small"
                                 margin="normal"
