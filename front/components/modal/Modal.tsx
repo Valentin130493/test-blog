@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import {styles} from "../../constants/styles";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import {PostForm} from "../postForm/PostForm";
 
 
 export const BasicModal = ({children, value}: any) => {

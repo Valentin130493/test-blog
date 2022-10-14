@@ -5,12 +5,13 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import {useEffect} from "react";
 import axios from "axios";
-import {baseUrl, createPost, getPosts, users} from "../../constants/api";
+import {baseUrl, users} from "../../constants/api";
 import {BasicModal} from "../modal/Modal";
 import {PostForm} from "../postForm/PostForm";
 import {UserForm} from "../userForm/userForm";
-import {ImageList, ImageListItem} from "@mui/material";
 import {PostItem} from "../postItem/PostItem";
+import usePosts from "../../hooks/usePosts";
+import {fetchData} from "next-auth/client/_utils";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -56,15 +57,20 @@ export default function BasicTabs() {
     const [value, setValue] = React.useState(0);
     const [posts, setPosts] = React.useState<any>(null);
     const [user, setUser] = React.useState<any>(null);
+    const {getPost} = usePosts()
+    console.log(getPost)
+
+const fetchData = async () => {
+    if (value === 0) axios.get(`${baseUrl}${users}`).then((res) => {
+        setUser(res.data)
+    })
+    // if (value === 1) setPosts(getPost)
+    }
 
 
     useEffect(() => {
-        if (value === 0) axios.get(`${baseUrl}${users}`).then((res) => {
-            setUser(res.data)
-        })
-        if (value === 1) axios.get(`${baseUrl}${getPosts}`).then((res) => {
-            setPosts(res.data)
-        })
+        getPost().then((res)=>{setPosts(res)})
+        fetchData()
     }, [value])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -95,7 +101,7 @@ export default function BasicTabs() {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <>
-                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item}/>)}
+                    {posts && posts.map((item: ItemMapInterface, index: number) => <PostItem key={index} {...item} fetchData={fetchData}/>)}
                 </>
                 <BasicModal value={value}><PostForm/></BasicModal>
             </TabPanel>
