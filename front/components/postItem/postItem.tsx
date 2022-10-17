@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {ModalItem} from "../modalItem/ModalItem";
+import {ModalItem} from "../modalItem/modalItem";
 import {baseUrl} from "../../constants/api";
 
 interface TabPanelProps {

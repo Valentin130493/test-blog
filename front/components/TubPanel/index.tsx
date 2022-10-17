@@ -6,10 +6,10 @@ import Box from '@mui/material/Box';
 import {useEffect} from "react";
 import axios from "axios";
 import {baseUrl, users} from "../../constants/api";
-import {BasicModal} from "../modal/Modal";
-import {PostForm} from "../postForm/PostForm";
+import {BasicModal} from "../modal/modal";
+import {PostForm} from "../postForm/postForm";
 import {UserForm} from "../userForm/userForm";
-import {PostItem} from "../postItem/PostItem";
+import {PostItem} from "../postItem/postItem";
 import usePosts from "../../hooks/usePosts";
 import {fetchData} from "next-auth/client/_utils";
 

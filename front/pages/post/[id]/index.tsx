@@ -1,6 +1,5 @@
 import React from 'react';
-import PostItemUser from "../../../components/postItemUser/PostItemUser";
-import {Post} from "../../../types/postTypes";
+import PostItemUser from "../../../components/postItemUser/postItemUser";
 import axios from "axios";
 import {baseUrl, posts as allPosts} from "../../../constants/api";
 import {useRouter} from "next/router";
@@ -30,27 +29,5 @@ const Index: React.FC = () => {
     );
 };
 
-// export async function getStaticPaths() {
-//     const res = await axios.get(`${baseUrl}${allPosts}`)
-//     const posts = await res.data
-//
-//     const paths = posts.map((post: Post) => ({
-//         params: {id: post.post_id.toString()},
-//     }))
-//
-//     return {paths, fallback: false}
-// }
-//
-// export async function getStaticProps({params}: any) {
-//     console.log(params.id)
-//     const res = await axios.get(`${baseUrl}${allPosts}/${params.id}`)
-//     const post = res.data
-//
-//     return {
-//         props: {
-//             post,
-//         },
-//     }
-// }
 
 export default Index;
