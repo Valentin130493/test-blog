@@ -45,6 +45,7 @@ const PostItemUser = ({comments, published_date, content, image_url, title}: Pos
     const day = condition ? post?.published_date?.substring(0, 10).split('-').reverse().join('-') : published_date?.substring(0, 10).split('-').reverse().join('-')
     const time = condition ? post?.published_date?.substring(11, 19) : published_date?.substring(11, 19)
 
+    // @ts-ignore
     return (
         <Box component={'div'} sx={styles.post.div} style={{margin: "10px 0"}}>
             <Box component={'div'}>
@@ -75,7 +76,7 @@ const PostItemUser = ({comments, published_date, content, image_url, title}: Pos
             </Box>
             <Box component={'div'} style={{width: state?.length === 0 ? "50%" : "auto"}}>
                 < Typography component={'h2'} style={{fontSize: "36px"}}>Comments </Typography>
-                {(post?.comments || state) && state.map((comment: Comments, index: number) => {
+                {(post?.comments || state) && state?.map((comment: Comments, index: number) => {
                     return <CommentItem key={index} {...comment} />
                 })}
 
