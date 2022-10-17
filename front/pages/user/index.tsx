@@ -3,11 +3,9 @@ import Header from "../../components/header/Header";
 import axios from "axios";
 import {baseUrl, posts as allPosts} from "../../constants/api";
 import {Post} from "../../types/postTypes";
-import PostItemUser from "../../components/postItemUser/PostItemUser";
 import {Grid, Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Link from "next/link";
 import {useRouter} from "next/router";
 
 interface UserPageProps {
@@ -16,9 +14,8 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({posts}) => {
     const router = useRouter()
-    console.log(posts)
-    const handleClick = (id: number) => {
-        router.push(`post/${id}`)
+    const handleClick = async (id: number) => {
+        await router.push(`post/${id}`)
     }
     return (
         <>
