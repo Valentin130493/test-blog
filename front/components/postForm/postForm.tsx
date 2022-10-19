@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
-import {baseUrl, adminPost, upload} from "../../constants/api";
+import {baseUrl, upload} from "../../constants/api";
 import {ICreatePost} from "../../types/postTypes";
 import usePosts from "../../hooks/usePosts";
 
