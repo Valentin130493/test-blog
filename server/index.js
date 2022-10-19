@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 })
 
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 app.use(express.json())
 app.use(cors())

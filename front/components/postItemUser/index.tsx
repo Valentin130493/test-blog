@@ -3,7 +3,7 @@ import {Comments, Post} from "../../types/postTypes";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {styles} from "../../constants/styles"
-import CommentItem from "../commentItem/commentItem";
+import CommentItem from "./commentItem";
 import {Skeleton, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -16,7 +16,7 @@ interface ICreateComment {
 }
 
 const PostItemUser = ({comments, published_date, content, image_url, title}: Post) => {
-    console.log(image_url)
+
     const router = useRouter()
     const post_id = router.query.id
     const postId = parseInt(post_id as string)
@@ -45,7 +45,6 @@ const PostItemUser = ({comments, published_date, content, image_url, title}: Pos
     const day = condition ? post?.published_date?.substring(0, 10).split('-').reverse().join('-') : published_date?.substring(0, 10).split('-').reverse().join('-')
     const time = condition ? post?.published_date?.substring(11, 19) : published_date?.substring(11, 19)
 
-    // @ts-ignore
     return (
         <Box component={'div'} sx={styles.post.div} style={{margin: "10px 0"}}>
             <Box component={'div'}>

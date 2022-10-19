@@ -1,8 +1,9 @@
 import React from 'react';
-import PostItemUser from "../../../components/postItemUser/postItemUser";
-import axios from "axios";
-import {baseUrl, posts as allPosts} from "../../../constants/api";
 import {useRouter} from "next/router";
+import axios from "axios";
+
+import {baseUrl, posts as allPosts} from "../../../constants/api";
+import PostItemUser from "../../../components/postItemUser";
 
 
 const Index: React.FC = () => {

@@ -8,7 +8,7 @@ interface HeaderProps {
     username: string
 }
 
-const Header = ({username}: HeaderProps) => {
+export const Header = ({username}: HeaderProps) => {
     return (
         <Box sx={styles.header} component="div">
             <Typography>Hello, {username}</Typography>
@@ -17,4 +17,3 @@ const Header = ({username}: HeaderProps) => {
     );
 };
 
-export default Header;

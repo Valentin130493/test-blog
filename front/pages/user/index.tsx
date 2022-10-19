@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from "../../components/header/header";
+import {Header} from "../../components/header";
 import axios from "axios";
 import {baseUrl, posts as allPosts} from "../../constants/api";
 import {Post} from "../../types/postTypes";

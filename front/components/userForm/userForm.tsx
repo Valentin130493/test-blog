@@ -3,7 +3,6 @@ import styles from "../../styles/auth-form.module.css";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import {ErrorMessage} from "@hookform/error-message";
-import Link from "next/link";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
@@ -18,28 +17,29 @@ interface ISingInForm {
 }
 
 
+export const UserForm = () => {
+    const {handleSubmit, register, formState: {errors}} = useForm<ISingInForm>();
 
- export const UserForm = () => {
-     const {handleSubmit, register,formState: { errors }} = useForm<ISingInForm>();
-
-     const onSubmit: SubmitHandler<ISingInForm> = async (data) =>
-     {const result = await axios.post(`${baseUrl}${login}`,data)
-         Storage.set(token,result.data.token)};
+    const onSubmit: SubmitHandler<ISingInForm> = async (data) => {
+        const result = await axios.post(`${baseUrl}${login}`, data)
+        Storage.set(token, result.data.token)
+    };
 
     return (
         <>
-            <Typography variant="subtitle1" component='p' gutterBottom={true} className={styles.authFormRegistrationSubtitle}>
+            <Typography variant="subtitle1" component='p' gutterBottom={true}
+                        className={styles.authFormRegistrationSubtitle}>
             </Typography>
             <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
                 <TextField
-                    {...register("username", {required: "Required field",min: 3,max: 10})}
+                    {...register("username", {required: "Required field", min: 3, max: 10})}
                     label="User name"
                     size="small"
                     margin="normal"
                     className={styles.authFormInput}
                     fullWidth={true}
                 />
-                <ErrorMessage errors={errors} name="username" />
+                <ErrorMessage errors={errors} name="username"/>
                 <TextField
                     {...register("email", {required: "Required field", pattern: /[A-Za-z]{3}/})}
                     label="Email"
@@ -48,9 +48,9 @@ interface ISingInForm {
                     className={styles.authFormInput}
                     fullWidth={true}
                 />
-                <ErrorMessage errors={errors} name="email" />
+                <ErrorMessage errors={errors} name="email"/>
                 <TextField
-                    {...register("password",{required:"Required field",min: 5})}
+                    {...register("password", {required: "Required field", min: 5})}
                     type="password"
                     label="Password"
                     size="small"
@@ -58,7 +58,7 @@ interface ISingInForm {
                     className={styles.authFormInput}
                     fullWidth={true}
                 />
-                <ErrorMessage errors={errors} name="password" />
+                <ErrorMessage errors={errors} name="password"/>
                 <Button
                     type="submit"
                     variant="contained"

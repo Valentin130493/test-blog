@@ -15,3 +15,9 @@ export interface Comments {
     published_date: string;
     user_id: number;
 }
+
+export interface ICreatePost {
+    title: string;
+    content: string;
+    image_url: string
+}

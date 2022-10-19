@@ -1,15 +1,16 @@
 import React from 'react';
-import {AuthFormRegistration} from "../../components/auth-form/auth-form-registration";
-import bg from "../../image/bg.jpg";
-import {MyImage} from "../../components/image/myImage";
 
+import {MyImage} from "../../components/myImage/myImage";
+import {AuthForm} from "../../components/auth-form";
+
+import bg from "../../image/bg.jpg";
 import styles from "../../styles/auth-page.module.css";
 
 const Registration = () => {
     return (
         <div className={styles.authPage}>
             <MyImage width={1000} height={500} src={bg} layout={"intrinsic"}/>
-            <AuthFormRegistration/>
+            <AuthForm/>
         </div>
     );
 };

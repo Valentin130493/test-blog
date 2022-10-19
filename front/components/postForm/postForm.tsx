@@ -4,25 +4,41 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
 import axios from "axios";
-import {baseUrl, createPost, login, upload} from "../../constants/api";
+import {baseUrl, adminPost, upload} from "../../constants/api";
+import {ICreatePost} from "../../types/postTypes";
+import usePosts from "../../hooks/usePosts";
 
-
-interface ICreatePost {
-    title: string;
-    content: string;
-    image_url: string
+interface PostFormProps {
+    create?: boolean;
+    post_id?: number
+    title?: string;
+    content?: string;
+    image_url?: string;
+    fetchData?: any
+    handleClose: () => void;
 }
 
-export const PostForm = () => {
-    const {handleSubmit, register} = useForm<ICreatePost>();
-    const [post, setPost] = useState({
-        title: '',
-        content: '',
-        image_url: ''
-    })
-    console.log(post)
+const initialState = {
+    title: '',
+    content: '',
+    image_url: ''
+}
 
-    const onSubmit: SubmitHandler<ICreatePost> = async (data) => {
+export const PostForm: React.FC<PostFormProps> = ({
+                                                      title,
+                                                      content,
+                                                      image_url,
+                                                      create,
+                                                      post_id,
+                                                      fetchData,
+                                                      handleClose
+                                                  }) => {
+    const {updatePost, createPost} = usePosts()
+    const {handleSubmit, register, setValue} = useForm<ICreatePost>();
+    const [post, setPost] = useState(create ? initialState : {title, content, image_url})
+
+
+    const onSubmitCreate: SubmitHandler<ICreatePost> = async (data) => {
         const {title, content} = data
         const formData = new FormData()
         formData.append('image', data.image_url[0])
@@ -30,19 +46,45 @@ export const PostForm = () => {
         const image_url = res.data?.url
         setPost({...post, image_url: image_url, title: title, content: content})
 
-        await axios.post(`${baseUrl}${createPost}`, {
+        await createPost({
             title: title,
             content: content,
             image_url: image_url
         })
+        setPost(initialState)
+        await fetchData()
+        handleClose()
     }
+
+
+    const onSubmitUpdate = async (data: ICreatePost) => {
+        const {title, content, image_url} = data
+        // @ts-ignore
+        const condition = post?.image_url.includes(`${image_url}`)
+        if (!condition) {
+            const formData = new FormData()
+            formData.append('image', data.image_url[0])
+            const res = await axios.post(`${baseUrl}${upload}`, formData)
+            const photo = res.data?.url
+            setPost({...post, image_url: photo})
+            await updatePost(post_id, {title: title, content: content, image_url: photo});
+            await fetchData()
+        } else {
+            await updatePost(post_id, {title: title, content: content, image_url: post.image_url});
+            await fetchData()
+        }
+        handleClose()
+    };
 
 
     return (
         <>
-            <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
+            <form className={styles.authFormForm} onSubmit={handleSubmit(create ? onSubmitCreate : onSubmitUpdate)}>
                 <TextField
-                    {...register("title", {required: "Required field"})}
+                    {...register("title", {
+                        onChange: (e) => setValue("title", e.target.value),
+                        value: `${post?.title}`
+                    })}
                     label="title"
                     size="small"
                     margin="normal"
@@ -51,7 +93,12 @@ export const PostForm = () => {
                 />
 
                 <TextField
-                    {...register("content", {required: "Required field", min: 3})}
+                    {...register("content", {
+                        onChange: (e) => setValue("content", e.target.value),
+                        value: `${post.content}`,
+                        required: "Required field",
+                        min: 3
+                    })}
                     multiline
                     maxRows={4}
                     type="text"
@@ -61,8 +108,12 @@ export const PostForm = () => {
                     className={styles.authFormInput}
                     fullWidth={true}
                 />
+
+                {post.image_url && <img style={{width: "100px", height: "100px"}} src={`${baseUrl}${post.image_url}`}
+                                        alt={post.image_url}/>}
+
                 <TextField
-                    {...register("image_url", {required: "Required field", min: 3})}
+                    {...register("image_url", {value: `${post.image_url}`})}
                     type="file"
                     size="small"
                     margin="normal"
@@ -79,7 +130,7 @@ export const PostForm = () => {
                         marginTop: 2
                     }}
                 >
-                    Submit</Button>
+                    {create ? 'Submit' : 'Save'}</Button>
             </form>
         </>)
 };
