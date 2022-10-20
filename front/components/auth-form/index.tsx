@@ -12,8 +12,9 @@ import {ErrorMessage} from '@hookform/error-message';
 import {authLogin, authReg, userPage} from "../../constants/pages";
 import useUsers from "../../hooks/useUsers";
 import {IRegistrationForm} from "../../types/userTypes";
+import {styles} from "../../constants/styles";
+import {Box} from '@mui/material';
 
-import styles from '../../styles/auth-form.module.css'
 
 export const AuthForm = () => {
     const router = useRouter()
@@ -32,20 +33,18 @@ export const AuthForm = () => {
 
 
     return (
-        <div className={styles.authForm}>
+        <Box sx={styles.authForm}>
             <Typography variant="h4" component='h1'>
                 {router.route === authLogin ? 'Sign in' : 'Registration'}
             </Typography>
-            <Typography variant="subtitle1" component='p' gutterBottom={true} className={styles.authFormSubtitle}>
-            </Typography>
-            <form className={styles.authFormForm}
+
+            <form style={styles.authFormForm}
                   onSubmit={handleSubmit(router.route === authLogin ? onSubmitAuth : onSubmitRegister)}>
                 {router.route === authReg && <TextField
                     {...register("username", {required: "Required field", min: 3, max: 10})}
                     label="User name"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />}
                 <TextField
@@ -53,7 +52,6 @@ export const AuthForm = () => {
                     label="Email"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
                 <ErrorMessage errors={errors} name="email"/>
@@ -63,7 +61,6 @@ export const AuthForm = () => {
                     label="Password"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
                 <ErrorMessage errors={errors} name="password"/>
@@ -85,6 +82,6 @@ export const AuthForm = () => {
                 >
                     Submit</Button>
             </form>
-        </div>
+        </Box>
     );
 };

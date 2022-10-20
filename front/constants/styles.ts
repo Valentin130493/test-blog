@@ -27,5 +27,32 @@ export const styles = {
             flexDirection: 'column',
             alignItems: 'center'
         }
+    },
+    authPage: {
+        display: 'flex',
+        height: '100vh',
+    },
+    authForm: {
+        width: '50vw',
+        height: '100vh',
+        backgroundColor: '#fff',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    authFormSubtitle: {
+        color: 'rgb(180,184,193)'
+    },
+
+    authFormForm: {
+        maxWidth: '360px'
+
+    },
+    adminPage: {
+        main: {borderBottom: 1, borderColor: 'divider', width: '100%', bgcolor: 'grey'},
+        tabPanelBox: {display: "flex", flexDirection: 'column'},
+        tabPanelButton: {margin: "0 10px", width: "200px", height: "40px"}
     }
 }

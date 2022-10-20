@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styles from "../../styles/auth-form.module.css";
+
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -7,6 +7,7 @@ import axios from "axios";
 import {baseUrl, upload} from "../../constants/api";
 import {ICreatePost} from "../../types/postTypes";
 import usePosts from "../../hooks/usePosts";
+import {styles} from "../../constants/styles";
 
 interface PostFormProps {
     create?: boolean;
@@ -79,7 +80,7 @@ export const PostForm: React.FC<PostFormProps> = ({
 
     return (
         <>
-            <form className={styles.authFormForm} onSubmit={handleSubmit(create ? onSubmitCreate : onSubmitUpdate)}>
+            <form style={styles.authFormForm} onSubmit={handleSubmit(create ? onSubmitCreate : onSubmitUpdate)}>
                 <TextField
                     {...register("title", {
                         onChange: (e) => setValue("title", e.target.value),
@@ -88,7 +89,6 @@ export const PostForm: React.FC<PostFormProps> = ({
                     label="title"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
 
@@ -105,7 +105,6 @@ export const PostForm: React.FC<PostFormProps> = ({
                     label="description"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
 
@@ -117,7 +116,6 @@ export const PostForm: React.FC<PostFormProps> = ({
                     type="file"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
 

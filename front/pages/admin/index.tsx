@@ -16,6 +16,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Button from "@mui/material/Button";
 import {User} from "../../types/userTypes";
 import {PostItemAdmin} from "../../components/postItemAdmin";
+import {styles} from "../../constants/styles";
 
 
 interface TabPanelProps {
@@ -77,7 +78,6 @@ const AdminPage = () => {
 
 
     useEffect(() => {
-        console.log("render fetch data")
         fetchData()
     }, [value])
 
@@ -87,8 +87,8 @@ const AdminPage = () => {
 
 
     return (
-        <Box sx={{width: '100%'}}>
-            <Box sx={{borderBottom: 1, borderColor: 'divider', width: '100%', bgcolor: 'grey'}}>
+        <>
+            <Box sx={styles.adminPage.main}>
                 <Tabs indicatorColor="secondary"
                       textColor="inherit" variant="fullWidth" centered value={value} onChange={handleChange}>
                     <Tab label="Users" {...a11yProps(0)} />
@@ -96,8 +96,8 @@ const AdminPage = () => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <Box style={{display: "flex", flexDirection: 'column'}}>
-                    <Button style={{margin: "0 10px", width: "200px", height: "40px"}} onClick={handleOpen}
+                <Box sx={styles.adminPage.tabPanelBox}>
+                    <Button style={styles.adminPage.tabPanelButton} onClick={handleOpen}
                             variant="outlined" startIcon={<AddCircleIcon/>}
                     >
                         {'create user'}
@@ -114,8 +114,8 @@ const AdminPage = () => {
 
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Box style={{display: "flex", flexDirection: 'column'}}>
-                    <Button style={{margin: "0 10px", width: "200px", height: "40px"}} onClick={handleOpen}
+                <Box sx={styles.adminPage.tabPanelBox}>
+                    <Button style={styles.adminPage.tabPanelButton} onClick={handleOpen}
                             variant="outlined"
                             startIcon={<AddCircleIcon/>}
                     >
@@ -132,7 +132,7 @@ const AdminPage = () => {
 
                 </Box>
             </TabPanel>
-        </Box>
+        </>
     );
 };
 
