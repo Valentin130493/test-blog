@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "../../styles/auth-form.module.css";
+
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import {ErrorMessage} from "@hookform/error-message";
@@ -9,6 +9,7 @@ import axios from "axios";
 import {baseUrl, login} from "../../constants/api";
 import {Storage} from "../../utils/sessionStorage";
 import {token} from "../../constants/storageKey";
+import {styles} from "../../constants/styles";
 
 interface ISingInForm {
     username: string;
@@ -28,15 +29,14 @@ export const UserForm = () => {
     return (
         <>
             <Typography variant="subtitle1" component='p' gutterBottom={true}
-                        className={styles.authFormRegistrationSubtitle}>
+                        style={styles.authFormSubtitle}>
             </Typography>
-            <form className={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
+            <form style={styles.authFormForm} onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     {...register("username", {required: "Required field", min: 3, max: 10})}
                     label="User name"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
                 <ErrorMessage errors={errors} name="username"/>
@@ -45,7 +45,6 @@ export const UserForm = () => {
                     label="Email"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
                 <ErrorMessage errors={errors} name="email"/>
@@ -55,7 +54,6 @@ export const UserForm = () => {
                     label="Password"
                     size="small"
                     margin="normal"
-                    className={styles.authFormInput}
                     fullWidth={true}
                 />
                 <ErrorMessage errors={errors} name="password"/>
