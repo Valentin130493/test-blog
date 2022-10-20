@@ -46,43 +46,33 @@ const PostItemUser = ({comments, published_date, content, image_url, title}: Pos
     const time = condition ? post?.published_date?.substring(11, 19) : published_date?.substring(11, 19)
 
     return (
-        <Box component={'div'} sx={styles.post.div} style={{margin: "10px 0"}}>
+        <Box component={'div'} sx={styles.postItemUser.div} style={{margin: "10px 0"}}>
             <Box component={'div'}>
-                <img style={{borderRadius: "20px"}} width={1000} height={500}
+                <img style={styles.postItemUser.img} width={1000} height={500}
                      src={condition ? `${baseUrl}${post?.image_url}` : `${baseUrl}${image_url}`}
                      alt={title}/>
 
                 {(post?.published_date || published_date) && <Box component={'div'}
-                                                                  style={{
-                                                                      display: "flex",
-                                                                      flexDirection: 'column',
-                                                                      width: "100%",
-                                                                      padding: '5px'
-                                                                  }}>
-                    <Typography component={'h1'} style={{
-                        textAlign: 'center',
-                        fontSize: "36px"
-                    }}>{condition ? post?.title : title}</Typography>
-                    <Typography style={{fontSize: "26px", textAlign: 'center', padding: '5px'}}
+                                                                  sx={styles.postItemUser.info}>
+                    <Typography component={'h1'}
+                                sx={styles.postItemUser.title}>{condition ? post?.title : title}</Typography>
+                    <Typography sx={styles.postItemUser.content}
                                 component={'p'}>{condition ? post?.content : content}</Typography>
                     <Typography component={'p'}
-                                style={{
-                                    textAlign: "end",
-                                    fontStyle: "italic",
-                                    fontSize: "20px"
-                                }}>published: {day} {time}</Typography>
+                                sx={styles.postItemUser.publishDate}>published: {day} {time}</Typography>
                 </Box>}
             </Box>
             <Box component={'div'} style={{width: state?.length === 0 ? "50%" : "auto"}}>
-                < Typography component={'h2'} style={{fontSize: "36px"}}>Comments </Typography>
+                < Typography component={'h2'} sx={styles.postItemUser.comment}>Comments </Typography>
                 {(post?.comments || state) && state?.map((comment: Comments, index: number) => {
                     return <CommentItem key={index} {...comment} />
                 })}
 
                 <Box component={"div"}>
-                    <form onSubmit={handleSubmit(onSubmit)} style={{display: "flex", justifyContent: 'space-between'}}>
-                        <TextField style={{width: "70%"}} {...register("content")}/>
-                        <Button type={"submit"} variant={"contained"} style={{marginLeft: "10px"}}>add comment</Button>
+                    <form onSubmit={handleSubmit(onSubmit)} style={styles.postItemUser.form}>
+                        <TextField style={styles.postItemUser.textField} {...register("content")}/>
+                        <Button type={"submit"} variant={"contained"} style={styles.postItemUser.btn}>add
+                            comment</Button>
                     </form>
                 </Box>
             </Box>

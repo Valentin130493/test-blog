@@ -7,6 +7,7 @@ import {Grid, Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {useRouter} from "next/router";
+import {styles} from "../../constants/styles";
 
 interface UserPageProps {
     posts: Post[]
@@ -21,14 +22,13 @@ const UserPage: React.FC<UserPageProps> = ({posts}) => {
         <>
             <Header username="Vasay Krasavtsev"/>
             <>
-
                 <Grid container wrap="wrap" spacing={1} style={{padding: "0 50px"}}>
                     {(posts.length === 0 ? Array.from(new Array(3)) : posts).map((item, index) => (
-                        <Box key={index} sx={{width: 250, marginRight: 1, my: 5}}
+                        <Box key={index} sx={styles.postUser.box}
                              onClick={() => handleClick(item.post_id)}>
                             {item.image_url ? (
                                 <img
-                                    style={{width: 250, height: 150}}
+                                    style={styles.postUser.img}
                                     alt={item.title}
                                     src={`${baseUrl}${item.image_url}`}
                                 />
@@ -37,11 +37,11 @@ const UserPage: React.FC<UserPageProps> = ({posts}) => {
                             )}
                             {item ? (
                                 <Box sx={{pr: 2}}>
-                                    <Typography style={{textAlign: 'center', fontSize: '24px'}} gutterBottom
+                                    <Typography sx={styles.postUser.title} gutterBottom
                                                 variant="body2">
                                         {item.title}
                                     </Typography>
-                                    <Typography style={{textAlign: 'center'}} display="block" variant="caption"
+                                    <Typography sx={styles.postUser.content} display="block" variant="caption"
                                                 color="text.secondary">
                                         {item.content.substring(0, 50)}...
                                     </Typography>
@@ -56,8 +56,6 @@ const UserPage: React.FC<UserPageProps> = ({posts}) => {
                         </Box>
                     ))}
                 </Grid>
-
-
             </>
         </>
     );

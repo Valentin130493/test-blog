@@ -6,6 +6,7 @@ import {Delete} from "@mui/icons-material";
 import usePosts from "../../hooks/usePosts";
 import {BasicModal} from "../modal";
 import {PostForm} from "../postForm/postForm";
+import {styles} from "../../constants/styles";
 
 interface TabPanelProps {
     post_id: number
@@ -28,23 +29,21 @@ export const PostItemAdmin: FC<TabPanelProps> = ({title, content, image_url, pos
 
     return (
         <>
-            <div onClick={() => handleOpen} style={{
-                display: "flex", width: "100%", border: "1px solid", borderRadius: "10px",
-                justifyContent: "space-around", padding: "10px", alignItems: "center", margin: '10px'
-            }}>
-                <img style={{width: "150px", height: "150px", borderRadius: '20px'}}
+            <div onClick={() => handleOpen} style={styles.postItemAdmin.div}>
+                <img style={styles.postItemAdmin.img}
                      src={`${baseUrl}${image_url}`}
                      alt={title}
                      loading="lazy"
                 />
-                <p style={{fontSize: "24px", width: "250px",}}>{title}</p>
-                <p style={{fontSize: "20px", width: "250px"}}>{content.substring(0, 50)}</p>
-                <Button style={{margin: "0 10px"}} onClick={handleOpen} variant="outlined" startIcon={<AddCircleIcon/>}
+                <p style={styles.postItemAdmin.title}>{title}</p>
+                <p style={styles.postItemAdmin.content}>{content.substring(0, 50)}</p>
+                <Button style={styles.postItemAdmin.btn} onClick={handleOpen} variant="outlined"
+                        startIcon={<AddCircleIcon/>}
                 >
                     {'edit'}
                 </Button>
 
-                <Button style={{marginRight: "10px"}} onClick={() => handleDelete(post_id)} variant="outlined"
+                <Button style={styles.postItemAdmin.btn} onClick={() => handleDelete(post_id)} variant="outlined"
                         startIcon={<Delete/>}
                 >
                     {'delete'}
