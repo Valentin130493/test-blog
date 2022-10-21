@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import {useRouter} from "next/router";
 import Link from "next/link";
@@ -9,26 +9,38 @@ import Button from '@mui/material/Button';
 import {useForm, SubmitHandler} from "react-hook-form";
 import {ErrorMessage} from '@hookform/error-message';
 
-import {authLogin, authReg, userPage} from "../../constants/pages";
+import {adminPage, authLogin, authReg, userPage} from "../../constants/pages";
 import useUsers from "../../hooks/useUsers";
 import {IRegistrationForm} from "../../types/userTypes";
 import {styles} from "../../constants/styles";
 import {Box} from '@mui/material';
+import {AuthContext} from "../../context/authProvider";
+import {role, tokenKey} from "../../constants/storageKey";
 
 
 export const AuthForm = () => {
     const router = useRouter()
     const {userLogin, userRegister} = useUsers()
+    const {isAuth, login} = useContext(AuthContext)
     const {handleSubmit, register, formState: {errors}} = useForm<IRegistrationForm>();
+    useEffect(() => {
+
+    }, [isAuth])
 
     const onSubmitAuth: SubmitHandler<IRegistrationForm> = async (data) => {
         await userLogin(data)
-        await router.push(userPage)
+        login()
+        if (process.browser) {
+            const admin = window.sessionStorage.getItem(role)
+            await router.push(isAuth && admin? adminPage : authLogin)
+        }
+        await router.push(isAuth ? userPage : authLogin)
     };
 
     const onSubmitRegister: SubmitHandler<IRegistrationForm> = async (data) => {
         await userRegister(data)
-        await router.push(authLogin)
+        login()
+        await router.push(isAuth ? userPage : authLogin)
     };
 
 

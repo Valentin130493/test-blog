@@ -1,1 +1,2 @@
-export const token = "token"
+export const tokenKey = "token"
+export const role = "admin"
