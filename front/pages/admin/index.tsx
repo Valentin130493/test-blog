@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -17,6 +17,9 @@ import Button from "@mui/material/Button";
 import {User} from "../../types/userTypes";
 import {PostItemAdmin} from "../../components/postItemAdmin";
 import {styles} from "../../constants/styles";
+import {AuthContext} from "../../context/authProvider";
+import Link from "next/link";
+import {userPage} from "../../constants/pages";
 
 
 interface TabPanelProps {
@@ -54,6 +57,8 @@ function a11yProps(index: number) {
 }
 
 const AdminPage = () => {
+    const {isAdmin} = useContext(AuthContext)
+    console.log(isAdmin)
     const [value, setValue] = React.useState(0);
 
     const [posts, setPosts] = React.useState<Post[]>();
@@ -87,7 +92,8 @@ const AdminPage = () => {
 
 
     return (
-        <>
+
+        isAdmin ? (<>
             <Box sx={styles.adminPage.main}>
                 <Tabs indicatorColor="secondary"
                       textColor="inherit" variant="fullWidth" centered value={value} onChange={handleChange}>
@@ -132,7 +138,10 @@ const AdminPage = () => {
 
                 </Box>
             </TabPanel>
-        </>
+
+        </>) : (<Link href={userPage}>back to user</Link>)
+
+
     );
 };
 

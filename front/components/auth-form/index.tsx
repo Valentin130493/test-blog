@@ -15,26 +15,23 @@ import {IRegistrationForm} from "../../types/userTypes";
 import {styles} from "../../constants/styles";
 import {Box} from '@mui/material';
 import {AuthContext} from "../../context/authProvider";
-import {role, tokenKey} from "../../constants/storageKey";
 
 
 export const AuthForm = () => {
     const router = useRouter()
     const {userLogin, userRegister} = useUsers()
-    const {isAuth, login} = useContext(AuthContext)
+    const {isAuth, isAdmin, login} = useContext(AuthContext)
     const {handleSubmit, register, formState: {errors}} = useForm<IRegistrationForm>();
     useEffect(() => {
 
-    }, [isAuth])
+    }, [isAuth, isAdmin])
 
     const onSubmitAuth: SubmitHandler<IRegistrationForm> = async (data) => {
         await userLogin(data)
         login()
-        if (process.browser) {
-            const admin = window.sessionStorage.getItem(role)
-            await router.push(isAuth && admin? adminPage : authLogin)
-        }
+
         await router.push(isAuth ? userPage : authLogin)
+        await router.push(isAuth && isAdmin ? adminPage : authLogin)
     };
 
     const onSubmitRegister: SubmitHandler<IRegistrationForm> = async (data) => {

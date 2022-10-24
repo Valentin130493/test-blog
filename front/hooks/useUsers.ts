@@ -8,7 +8,7 @@ export default function useUsers() {
 
     const userLogin = async (obj: IRegistrationForm) => {
         const {data} = await axios.post(`${baseUrl}${login}`, obj)
-        console.log(data)
+
         Storage.set(tokenKey, data.token)
         Storage.set(role, data.role)
     }

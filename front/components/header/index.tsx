@@ -9,10 +9,14 @@ interface HeaderProps {
 }
 
 export const Header = ({username}: HeaderProps) => {
+    const handleClick = () => {
+        sessionStorage.clear()
+    }
+
     return (
         <Box sx={styles.header} component="div">
             <Typography>Hello, {username}</Typography>
-            <Button variant={"outlined"}>Log Out</Button>
+            <Button variant={"outlined"} onClick={handleClick}>Log Out</Button>
         </Box>
     );
 };
