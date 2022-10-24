@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:8080/'
+export const baseUrl = 'https://test-blog-99.herokuapp.com/'
 export const registration = 'auth/register'
 export const login = 'auth/login'
 export const users = 'admin/users'
