@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -17,9 +17,8 @@ import Button from "@mui/material/Button";
 import {User} from "../../types/userTypes";
 import {PostItemAdmin} from "../../components/postItemAdmin";
 import {styles} from "../../constants/styles";
-import {AuthContext} from "../../context/authProvider";
-import Link from "next/link";
-import {userPage} from "../../constants/pages";
+import {PostGet} from "../../store/slices/postSlice";
+import {useDispatch} from "react-redux";
 
 
 interface TabPanelProps {
@@ -57,8 +56,6 @@ function a11yProps(index: number) {
 }
 
 const AdminPage = () => {
-    const {isAdmin} = useContext(AuthContext)
-    console.log(isAdmin)
     const [value, setValue] = React.useState(0);
 
     const [posts, setPosts] = React.useState<Post[]>();
@@ -70,6 +67,8 @@ const AdminPage = () => {
 
     const {getPost} = usePosts()
     const {getUsers} = useUsers()
+
+    const dispatch = useDispatch()
 
 
     const fetchData = async () => {
@@ -84,6 +83,8 @@ const AdminPage = () => {
 
     useEffect(() => {
         fetchData()
+        // @ts-ignore
+        dispatch(PostGet())
     }, [value])
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -92,8 +93,7 @@ const AdminPage = () => {
 
 
     return (
-
-        isAdmin ? (<>
+        <>
             <Box sx={styles.adminPage.main}>
                 <Tabs indicatorColor="secondary"
                       textColor="inherit" variant="fullWidth" centered value={value} onChange={handleChange}>
@@ -138,10 +138,7 @@ const AdminPage = () => {
 
                 </Box>
             </TabPanel>
-
-        </>) : (<Link href={userPage}>back to user</Link>)
-
-
+        </>
     );
 };
 
