@@ -10,12 +10,20 @@ export const styles = {
         boxShadow: 24,
         p: 4,
     },
-    header: {
+    headerAuth: {
         width: "100%",
         border: '2px solid #000',
         display: "flex",
         padding: "10px 5px",
         justifyContent: 'space-around',
+        alignItems: 'center'
+    },
+    headerNotAuth: {
+        width: "100%",
+        border: '2px solid #000',
+        display: "flex",
+        padding: "10px 5px",
+        justifyContent: 'flex-end',
         alignItems: 'center'
     },
     postItemUser: {
@@ -145,7 +153,7 @@ export const styles = {
             textAlign: 'center',
             fontSize: '24px'
         },
-        content:{
+        content: {
             textAlign: 'center'
         }
     }

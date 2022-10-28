@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from "axios";
 import {baseUrl, login, registration} from "../../constants/api";
+import {tokenKey} from "../../constants/storageKey";
 
 interface UserDataProps {
     email: string,
@@ -12,7 +13,8 @@ export interface UserState {
     loading: boolean,
     error: any,
     userInfo: any | null,
-    isAuthenticated: boolean
+    isAuthenticated: boolean,
+    isAdmin: boolean
 }
 
 export const userLogin = createAsyncThunk(
@@ -42,7 +44,8 @@ const initialState: UserState = {
     userInfo: null,
     isAuthenticated: false,
     loading: false,
-    error: null
+    error: null,
+    isAdmin: false
 }
 
 export const userSlice = createSlice({
@@ -57,8 +60,13 @@ export const userSlice = createSlice({
                 state.isAuthenticated = false;
             });
         builder.addCase(
-            userLogin.fulfilled, (state, {payload}) => {
-                state.userInfo = {...payload};
+            userLogin.fulfilled, (state, {payload}: any) => {
+                const {user_id, username, email, token, role} = payload.data
+                sessionStorage.setItem(tokenKey, token)
+                if (role) {
+                    state.isAdmin = true
+                }
+                state.userInfo = {user_id, username, email};
                 state.isAuthenticated = true;
                 state.loading = false;
             });
@@ -75,8 +83,10 @@ export const userSlice = createSlice({
                 state.isAuthenticated = false;
             });
         builder.addCase(
-            userRegister.fulfilled, (state, {payload}) => {
-                state.userInfo = payload;
+            userRegister.fulfilled, (state, {payload}:any) => {
+                const {user_id, username, email, token, role} = payload.data
+                sessionStorage.setItem(tokenKey, token)
+                state.userInfo = {user_id, username, email};
                 state.isAuthenticated = true;
                 state.loading = false;
             });

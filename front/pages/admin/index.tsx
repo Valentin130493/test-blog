@@ -18,7 +18,8 @@ import {User} from "../../types/userTypes";
 import {PostItemAdmin} from "../../components/postItemAdmin";
 import {styles} from "../../constants/styles";
 import {PostGet} from "../../store/slices/postSlice";
-import {useDispatch} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../store";
+import {useRouter} from "next/router";
 
 
 interface TabPanelProps {
@@ -56,6 +57,17 @@ function a11yProps(index: number) {
 }
 
 const AdminPage = () => {
+
+    const dispatch = useAppDispatch()
+    const router = useRouter()
+    const {isAdmin, isAuthenticated} = useAppSelector((state) => state.user)
+
+    useEffect(() => {
+        if (!isAdmin && !isAuthenticated) {
+            router.back()
+        }
+    }, [isAdmin, isAuthenticated])
+
     const [value, setValue] = React.useState(0);
 
     const [posts, setPosts] = React.useState<Post[]>();
@@ -67,8 +79,6 @@ const AdminPage = () => {
 
     const {getPost} = usePosts()
     const {getUsers} = useUsers()
-
-    const dispatch = useDispatch()
 
 
     const fetchData = async () => {
@@ -83,7 +93,6 @@ const AdminPage = () => {
 
     useEffect(() => {
         fetchData()
-        // @ts-ignore
         dispatch(PostGet())
     }, [value])
 
@@ -93,7 +102,7 @@ const AdminPage = () => {
 
 
     return (
-        <>
+        isAdmin && isAuthenticated ? (<>
             <Box sx={styles.adminPage.main}>
                 <Tabs indicatorColor="secondary"
                       textColor="inherit" variant="fullWidth" centered value={value} onChange={handleChange}>
@@ -102,7 +111,7 @@ const AdminPage = () => {
                 </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
-                <Box sx={styles.adminPage.tabPanelBox}>
+                <>
                     <Button style={styles.adminPage.tabPanelButton} onClick={handleOpen}
                             variant="outlined" startIcon={<AddCircleIcon/>}
                     >
@@ -111,16 +120,16 @@ const AdminPage = () => {
                     <BasicModal open={open} handleClose={() => handleClose()}><UserForm/></BasicModal>
 
                     {user && user.map((item: any, index: number) =>
-                        (<Typography component={'span'} key={index}>
-                                <p>{item.username}</p>
-                                <p>{item.email}</p>
+                        (<Typography key={index}>
+                                <Typography>{item.username}</Typography>
+                                <Typography>{item.email}</Typography>
                             </Typography>
                         ))}
-                </Box>
+                </>
 
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <Box sx={styles.adminPage.tabPanelBox}>
+                <>
                     <Button style={styles.adminPage.tabPanelButton} onClick={handleOpen}
                             variant="outlined"
                             startIcon={<AddCircleIcon/>}
@@ -136,9 +145,9 @@ const AdminPage = () => {
                         )
                     )}
 
-                </Box>
+                </>
             </TabPanel>
-        </>
+        </>) : (<>You have not access rights</>)
     );
 };
 

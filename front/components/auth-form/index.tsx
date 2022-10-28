@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 
 import {useRouter} from "next/router";
 import Link from "next/link";
@@ -10,34 +10,46 @@ import {useForm, SubmitHandler} from "react-hook-form";
 import {ErrorMessage} from '@hookform/error-message';
 
 import {adminPage, authLogin, authReg, userPage} from "../../constants/pages";
-import useUsers from "../../hooks/useUsers";
+
 import {IRegistrationForm} from "../../types/userTypes";
 import {styles} from "../../constants/styles";
 import {Box} from '@mui/material';
-import {AuthContext} from "../../context/authProvider";
+import {userLogin, userRegister} from "../../store/slices/userSlice";
+import {useAppDispatch, useAppSelector} from "../../store";
 
 
 export const AuthForm = () => {
     const router = useRouter()
-    const {userLogin, userRegister} = useUsers()
-    const {isAuth, isAdmin, login} = useContext(AuthContext)
+    console.log(router)
+    const dispatch = useAppDispatch()
+    const {isAdmin, isAuthenticated} = useAppSelector((state) => state.user)
+    console.log(isAdmin, isAuthenticated)
     const {handleSubmit, register, formState: {errors}} = useForm<IRegistrationForm>();
+
     useEffect(() => {
 
-    }, [isAuth, isAdmin])
+    }, [isAdmin, isAuthenticated])
 
     const onSubmitAuth: SubmitHandler<IRegistrationForm> = async (data) => {
-        await userLogin(data)
-        login()
+        await dispatch(userLogin(data))
+        if (isAdmin && isAuthenticated) {
+           await router.push(adminPage)
+        } else if (isAuthenticated) {
+          await  router.push(userPage)
+        } else {
+           await router.push(authLogin)
+        }
 
-        await router.push(isAuth ? userPage : authLogin)
-        await router.push(isAuth && isAdmin ? adminPage : authLogin)
     };
 
     const onSubmitRegister: SubmitHandler<IRegistrationForm> = async (data) => {
-        await userRegister(data)
-        login()
-        await router.push(isAuth ? userPage : authLogin)
+        await dispatch(userRegister(data))
+        if (isAuthenticated) {
+          await  router.push(userPage)
+        } else {
+           await router.push(authReg)
+        }
+
     };
 
 
