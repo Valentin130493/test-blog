@@ -20,10 +20,10 @@ import {useAppDispatch, useAppSelector} from "../../store";
 
 export const AuthForm = () => {
     const router = useRouter()
-    console.log(router)
+    const [loading, setLoading] = React.useState(false)
     const dispatch = useAppDispatch()
     const {isAdmin, isAuthenticated} = useAppSelector((state) => state.user)
-    console.log(isAdmin, isAuthenticated)
+
     const {handleSubmit, register, formState: {errors}} = useForm<IRegistrationForm>();
 
     useEffect(() => {
@@ -31,13 +31,15 @@ export const AuthForm = () => {
     }, [isAdmin, isAuthenticated])
 
     const onSubmitAuth: SubmitHandler<IRegistrationForm> = async (data) => {
+        setLoading(true)
         await dispatch(userLogin(data))
+        setLoading(false)
         if (isAdmin && isAuthenticated) {
-           await router.push(adminPage)
+            !loading && await router.push(adminPage)
         } else if (isAuthenticated) {
-          await  router.push(userPage)
+            !loading && await router.push(userPage)
         } else {
-           await router.push(authLogin)
+            !loading && await router.push(authLogin)
         }
 
     };
@@ -45,9 +47,9 @@ export const AuthForm = () => {
     const onSubmitRegister: SubmitHandler<IRegistrationForm> = async (data) => {
         await dispatch(userRegister(data))
         if (isAuthenticated) {
-          await  router.push(userPage)
+            !loading && await router.push(userPage)
         } else {
-           await router.push(authReg)
+            !loading && await router.push(authReg)
         }
 
     };
