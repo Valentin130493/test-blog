@@ -10,6 +10,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {useRouter} from "next/router";
 import axios from "axios";
 import {baseUrl, comment, posts as allPosts} from "../../constants/api";
+import {useAppSelector} from "../../store";
 
 interface ICreateComment {
     content: string
@@ -23,7 +24,7 @@ const PostItemUser = ({comments, published_date, content, image_url, title}: Pos
     const [state, setState] = React.useState<Comments[]>()
     const [post, setPost] = React.useState<Post>()
     const condition = (published_date || content || image_url || title) === undefined
-
+    const {isAuthenticated} = useAppSelector((state) => state.user)
     React.useEffect(() => {
         setState(comments);
         if (condition) {
@@ -68,13 +69,13 @@ const PostItemUser = ({comments, published_date, content, image_url, title}: Pos
                     return <CommentItem key={index} {...comment} />
                 })}
 
-                <Box component={"div"}>
+                {isAuthenticated && <Box component={"div"}>
                     <form onSubmit={handleSubmit(onSubmit)} style={styles.postItemUser.form}>
                         <TextField style={styles.postItemUser.textField} {...register("content")}/>
                         <Button type={"submit"} variant={"contained"} style={styles.postItemUser.btn}>add
                             comment</Button>
                     </form>
-                </Box>
+                </Box>}
             </Box>
         </Box>
     )

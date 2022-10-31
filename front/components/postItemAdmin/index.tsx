@@ -7,6 +7,8 @@ import usePosts from "../../hooks/usePosts";
 import {BasicModal} from "../modal";
 import {PostForm} from "../postForm/postForm";
 import {styles} from "../../constants/styles";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 interface TabPanelProps {
     post_id: number
@@ -29,14 +31,14 @@ export const PostItemAdmin: FC<TabPanelProps> = ({title, content, image_url, pos
 
     return (
         <>
-            <div onClick={() => handleOpen} style={styles.postItemAdmin.div}>
+            <Box onClick={() => handleOpen} sx={styles.postItemAdmin.div}>
                 <img style={styles.postItemAdmin.img}
                      src={`${baseUrl}${image_url}`}
                      alt={title}
                      loading="lazy"
                 />
-                <p style={styles.postItemAdmin.title}>{title}</p>
-                <p style={styles.postItemAdmin.content}>{content.substring(0, 50)}</p>
+                <Typography style={styles.postItemAdmin.title}>{title}</Typography>
+                <Typography style={styles.postItemAdmin.content}>{content.substring(0, 50)}</Typography>
                 <Button style={styles.postItemAdmin.btn} onClick={handleOpen} variant="outlined"
                         startIcon={<AddCircleIcon/>}
                 >
@@ -48,7 +50,7 @@ export const PostItemAdmin: FC<TabPanelProps> = ({title, content, image_url, pos
                 >
                     {'delete'}
                 </Button>
-            </div>
+            </Box>
             <BasicModal open={open} handleClose={() => handleClose()}>
                 <PostForm post_id={post_id} create={false} content={content} image_url={image_url} title={title}
                           handleClose={handleClose} fetchData={fetchData}/>

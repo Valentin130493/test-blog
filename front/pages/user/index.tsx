@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {useRouter} from "next/router";
 import {styles} from "../../constants/styles";
+import {useAppSelector} from "../../store";
 
 interface UserPageProps {
     posts: Post[]
@@ -15,18 +16,18 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({posts}) => {
     const router = useRouter()
+    const {userInfo} = useAppSelector((store) => store.user)
     const handleClick = async (id: number) => {
         await router.push(`post/${id}`)
     }
     return (
         <>
-            <Header username="Vasay Krasavtsev"/>
+            <Header username={userInfo?.username}/>
             <>
                 <Grid container wrap="wrap" spacing={1} style={{padding: "0 50px"}}>
                     {(posts.length === 0 ? Array.from(new Array(3)) : posts).map((item, index) => (
-                        <Box key={index} sx={styles.postUser.box}
-                             onClick={() => handleClick(item.post_id)}>
-                            {item.image_url ? (
+                        <Box key={index} sx={styles.postUser.box} onClick={() => handleClick(item.post_id)}>
+                            {item?.image_url ? (
                                 <img
                                     style={styles.postUser.img}
                                     alt={item.title}

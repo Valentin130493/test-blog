@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {useRouter} from "next/router";
 import Link from "next/link";
@@ -9,26 +9,51 @@ import Button from '@mui/material/Button';
 import {useForm, SubmitHandler} from "react-hook-form";
 import {ErrorMessage} from '@hookform/error-message';
 
-import {authLogin, authReg, userPage} from "../../constants/pages";
-import useUsers from "../../hooks/useUsers";
+import {adminPage, authLogin, authReg, userPage} from "../../constants/pages";
+
 import {IRegistrationForm} from "../../types/userTypes";
 import {styles} from "../../constants/styles";
 import {Box} from '@mui/material';
+import {userLogin, userRegister} from "../../store/slices/userSlice";
+import {useAppDispatch, useAppSelector} from "../../store";
 
 
 export const AuthForm = () => {
     const router = useRouter()
-    const {userLogin, userRegister} = useUsers()
+    const [loading, setLoading] = React.useState(false)
+    const dispatch = useAppDispatch()
+    const {isAdmin, isAuthenticated} = useAppSelector((state) => state.user)
+
     const {handleSubmit, register, formState: {errors}} = useForm<IRegistrationForm>();
 
+    useEffect(() => {
+
+    }, [isAdmin, isAuthenticated])
+
     const onSubmitAuth: SubmitHandler<IRegistrationForm> = async (data) => {
-        await userLogin(data)
-        await router.push(userPage)
+        setLoading(true)
+        await dispatch(userLogin(data))
+        setLoading(false)
+        if (isAdmin && isAuthenticated) {
+            !loading && await router.push(adminPage)
+        } else if (isAuthenticated) {
+            !loading && await router.push(userPage)
+        } else {
+            !loading && await router.push(authLogin)
+        }
+
     };
 
     const onSubmitRegister: SubmitHandler<IRegistrationForm> = async (data) => {
-        await userRegister(data)
-        await router.push(authLogin)
+        setLoading(true)
+        await dispatch(userRegister(data))
+        setLoading(false)
+        if (isAuthenticated) {
+            !loading && await router.push(userPage)
+        } else {
+            !loading && await router.push(authReg)
+        }
+
     };
 
 
