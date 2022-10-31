@@ -26,8 +26,7 @@ const UserPage: React.FC<UserPageProps> = ({posts}) => {
             <>
                 <Grid container wrap="wrap" spacing={1} style={{padding: "0 50px"}}>
                     {(posts.length === 0 ? Array.from(new Array(3)) : posts).map((item, index) => (
-                        <Box key={index} sx={styles.postUser.box}
-                       s      onClick={() => handleClick(item.post_id)}>
+                        <Box key={index} sx={styles.postUser.box} onClick={() => handleClick(item.post_id)}>
                             {item?.image_url ? (
                                 <img
                                     style={styles.postUser.img}

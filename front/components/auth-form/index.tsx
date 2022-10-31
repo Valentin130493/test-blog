@@ -45,7 +45,9 @@ export const AuthForm = () => {
     };
 
     const onSubmitRegister: SubmitHandler<IRegistrationForm> = async (data) => {
+        setLoading(true)
         await dispatch(userRegister(data))
+        setLoading(false)
         if (isAuthenticated) {
             !loading && await router.push(userPage)
         } else {
